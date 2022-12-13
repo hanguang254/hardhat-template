@@ -2,7 +2,7 @@ require('dotenv').config();
 
 
 // 连接以太坊测试网
-const provider = new ethers.providers.JsonRpcProvider(`${process.env.ALCHEMY_API_KEY}`);
+const provider = new ethers.providers.JsonRpcProvider(`${process.env.MOONBRAN_API}`);
 //私钥
 privateKey = process.env.GOERLI_PRIVATE_KEY;
 
@@ -503,9 +503,7 @@ const abiERC20 = [
 ];
 // 利用私钥和provider创建wallet对象
 const wallet2 = new ethers.Wallet(privateKey, provider);
-
-
-const Testcontract = '0xCb0BaBD3a9371d976AF0322f89658e64141e5d87';
+const Testcontract = '0x344744a800aefc18022423e9BB6Da35BCD96a2BA';
 const contractTest = new ethers.Contract(Testcontract, abiERC20, wallet2);
 
 const main = async () => {
@@ -513,8 +511,17 @@ const main = async () => {
   const address = await wallet2.getAddress();
   const tx = await wallet2.getTransactionCount();
   console.log('地址：', address,'链上交易次数：',tx);
-  const contratAddress =await contractTest.address;
-  console.log(contratAddress);
   
+  const contratAddress =await contractTest.address;
+  console.log('测试合约地址：',contratAddress);
+
+  let overrides = {
+    gasLimit:5,
+    gasPrice:3000000,
+  }
+
+  const b = await contractTest.deduct(1,2,3,4,true,overrides);
+
+  console.log('返回值',b)
 };
 main();

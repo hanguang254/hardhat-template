@@ -17,6 +17,10 @@ module.exports = {
     goerli: {
       url: `${process.env.ALCHEMY_API_KEY}`,
       accounts: [process.env.GOERLI_PRIVATE_KEY]
+    },
+    moonbean:{
+      url:`${process.env.MOONBRAN_API}`,
+      accounts:[process.env.GOERLI_PRIVATE_KEY]
     }
   },
 };

@@ -18,3 +18,6 @@ npm install dotenv
 
 安装ethersjs
 npm install --save ethers
+
+
+MOONBRAN_API=https://rpc.api.moonbase.moonbeam.network
