@@ -11,3 +11,10 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
+
+需要安装dotenv
+npm install dotenv 
+引用require('dotenv').config();
+
+安装ethersjs
+npm install --save ethers
