@@ -20,11 +20,6 @@ const abiERC20 =[
 				"internalType": "uint256[]",
 				"name": "_fileIndex",
 				"type": "uint256[]"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_taskerIndex",
-				"type": "uint256"
 			}
 		],
 		"name": "acceptForTranslator",
@@ -43,47 +38,9 @@ const abiERC20 =[
 				"internalType": "uint256[]",
 				"name": "_fileIndex",
 				"type": "uint256[]"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_taskerIndex",
-				"type": "uint256"
 			}
 		],
 		"name": "acceptForVerifer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_index",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_taskerIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_fileIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_deduct",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "_isTrans",
-				"type": "bool"
-			}
-		],
-		"name": "deduct",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -98,6 +55,33 @@ const abiERC20 =[
 		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "OperationException",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "ParameterException",
+		"type": "error"
 	},
 	{
 		"anonymous": false,
@@ -172,212 +156,52 @@ const abiERC20 =[
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
 				"internalType": "address",
 				"name": "",
 				"type": "address"
 			},
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "bool",
 				"name": "",
-				"type": "string"
+				"type": "bool"
 			}
 		],
 		"name": "acceptTaskEv",
 		"type": "event"
 	},
 	{
-		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
-				"name": "",
+				"name": "_taskerIndex",
 				"type": "address"
 			},
 			{
-				"indexed": false,
 				"internalType": "uint256",
-				"name": "",
+				"name": "_fileIndex",
 				"type": "uint256"
 			},
 			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "releaseTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "introduce",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "need",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "deadline",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "sourceLanguage",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "goalLanguage",
-						"type": "string"
-					},
-					{
-						"internalType": "string[]",
-						"name": "preferList",
-						"type": "string[]"
-					},
-					{
-						"internalType": "uint256",
-						"name": "translationType",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "workLoad",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "isNonDisclosure",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "isCustomize",
-						"type": "bool"
-					},
-					{
-						"internalType": "uint256",
-						"name": "bounty",
-						"type": "uint256"
-					},
-					{
-						"components": [
-							{
-								"components": [
-									{
-										"internalType": "string",
-										"name": "name",
-										"type": "string"
-									},
-									{
-										"internalType": "uint256",
-										"name": "size",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "videoLength",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "Page",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "words",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "fileType",
-										"type": "uint256"
-									},
-									{
-										"internalType": "string",
-										"name": "path",
-										"type": "string"
-									}
-								],
-								"internalType": "struct LibProject.FileInfo",
-								"name": "file",
-								"type": "tuple"
-							},
-							{
-								"internalType": "uint256",
-								"name": "bounty",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "info",
-								"type": "string"
-							},
-							{
-								"internalType": "enum LibProject.FileState",
-								"name": "state",
-								"type": "uint8"
-							},
-							{
-								"internalType": "uint256",
-								"name": "lastUpload",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct LibProject.TaskInfo[]",
-						"name": "tasks",
-						"type": "tuple[]"
-					}
-				],
-				"indexed": false,
-				"internalType": "struct LibProject.ProParm",
-				"name": "",
-				"type": "tuple"
+				"internalType": "uint256",
+				"name": "_deductNumer",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isTrans",
+				"type": "bool"
 			}
 		],
-		"name": "addProjectEv",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "deductBountyEv",
-		"type": "event"
+		"name": "deductBounty",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -413,17 +237,17 @@ const abiERC20 =[
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "address",
 				"name": "_taskerIndex",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
 		"name": "overTimeTrans",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -437,21 +261,59 @@ const abiERC20 =[
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "address",
 				"name": "_taskerIndex",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
 		"name": "overTimeVf",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_to",
+				"type": "address"
+			}
+		],
+		"name": "pay",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "payEv",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -478,19 +340,19 @@ const abiERC20 =[
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "sourceLanguage",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "goalLanguage",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
-						"internalType": "string[]",
+						"internalType": "uint256[]",
 						"name": "preferList",
-						"type": "string[]"
+						"type": "uint256[]"
 					},
 					{
 						"internalType": "uint256",
@@ -596,12 +458,168 @@ const abiERC20 =[
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "_index",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "releaseTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "introduce",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "need",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "sourceLanguage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "goalLanguage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "preferList",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "translationType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "workLoad",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isNonDisclosure",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "isCustomize",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bounty",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "size",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "videoLength",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "Page",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "words",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "fileType",
+										"type": "uint256"
+									},
+									{
+										"internalType": "string",
+										"name": "path",
+										"type": "string"
+									}
+								],
+								"internalType": "struct LibProject.FileInfo",
+								"name": "file",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bounty",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "info",
+								"type": "string"
+							},
+							{
+								"internalType": "enum LibProject.FileState",
+								"name": "state",
+								"type": "uint8"
+							},
+							{
+								"internalType": "uint256",
+								"name": "lastUpload",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct LibProject.TaskInfo[]",
+						"name": "tasks",
+						"type": "tuple[]"
+					}
+				],
+				"indexed": false,
+				"internalType": "struct LibProject.ProParm",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"name": "postProjectEv",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -611,9 +629,9 @@ const abiERC20 =[
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint256",
+				"internalType": "address",
 				"name": "_taskerIndex",
-				"type": "uint256"
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
@@ -647,11 +665,6 @@ const abiERC20 =[
 			},
 			{
 				"internalType": "uint256",
-				"name": "_taskerIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
 				"name": "_fileIndex",
 				"type": "uint256"
 			},
@@ -667,6 +680,13 @@ const abiERC20 =[
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "transderToContract",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -678,80 +698,6 @@ const abiERC20 =[
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"name": "updateFileInfoEv",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum LibProject.FileState",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"name": "updateFileStateAndTimeEv",
-		"type": "event"
 	},
 	{
 		"inputs": [
@@ -783,19 +729,19 @@ const abiERC20 =[
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "sourceLanguage",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "goalLanguage",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
-						"internalType": "string[]",
+						"internalType": "uint256[]",
 						"name": "preferList",
-						"type": "string[]"
+						"type": "uint256[]"
 					},
 					{
 						"internalType": "uint256",
@@ -899,7 +845,7 @@ const abiERC20 =[
 		],
 		"name": "updateProject",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -907,31 +853,110 @@ const abiERC20 =[
 		"inputs": [
 			{
 				"indexed": false,
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"indexed": false,
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			},
 			{
 				"indexed": false,
-				"internalType": "enum LibProject.ProjectState",
+				"internalType": "string",
 				"name": "",
-				"type": "uint8"
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
-		"name": "updateProSateEv",
+		"name": "uploadAcceptStateEv",
 		"type": "event"
 	},
 	{
-		"anonymous": false,
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
 		"inputs": [
 			{
-				"indexed": false,
 				"internalType": "uint256",
-				"name": "",
+				"name": "_index",
 				"type": "uint256"
 			},
 			{
+				"internalType": "address",
+				"name": "_transIndex",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_fileIndex",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_isPass",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "_file",
+				"type": "string"
+			}
+		],
+		"name": "validate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
+	},
+	{
+		"inputs": [],
+		"name": "getBalanceOfContract",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getTaskInfo",
+		"outputs": [
+			{
 				"components": [
+					{
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
 					{
 						"internalType": "uint256",
 						"name": "releaseTime",
@@ -953,19 +978,19 @@ const abiERC20 =[
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "sourceLanguage",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "uint256",
 						"name": "goalLanguage",
-						"type": "string"
+						"type": "uint256"
 					},
 					{
-						"internalType": "string[]",
+						"internalType": "uint256[]",
 						"name": "preferList",
-						"type": "string[]"
+						"type": "uint256[]"
 					},
 					{
 						"internalType": "uint256",
@@ -991,6 +1016,33 @@ const abiERC20 =[
 						"internalType": "uint256",
 						"name": "bounty",
 						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "taskIndex",
+								"type": "uint256"
+							},
+							{
+								"internalType": "enum LibProject.TaskerState",
+								"name": "state",
+								"type": "uint8"
+							},
+							{
+								"internalType": "string",
+								"name": "file",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bounty",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct LibProject.ReturnFileInfo[]",
+						"name": "fileInfo",
+						"type": "tuple[]"
 					},
 					{
 						"components": [
@@ -1060,127 +1112,127 @@ const abiERC20 =[
 						"internalType": "struct LibProject.TaskInfo[]",
 						"name": "tasks",
 						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "taskerAddress",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "taskIndex",
+										"type": "uint256"
+									},
+									{
+										"internalType": "enum LibProject.TaskerState",
+										"name": "state",
+										"type": "uint8"
+									},
+									{
+										"internalType": "string",
+										"name": "file",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "bounty",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct LibProject.ReturnFileInfo[]",
+								"name": "taskerinfo",
+								"type": "tuple[]"
+							}
+						],
+						"internalType": "struct LibProject.ReturnTasker[]",
+						"name": "translators",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "taskerAddress",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "taskIndex",
+										"type": "uint256"
+									},
+									{
+										"internalType": "enum LibProject.TaskerState",
+										"name": "state",
+										"type": "uint8"
+									},
+									{
+										"internalType": "string",
+										"name": "file",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "bounty",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct LibProject.ReturnFileInfo[]",
+								"name": "taskerinfo",
+								"type": "tuple[]"
+							}
+						],
+						"internalType": "struct LibProject.ReturnTasker[]",
+						"name": "verifiers",
+						"type": "tuple[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "maxT",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "maxV",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numberT",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numberV",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isTransActive",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "isVerActive",
+						"type": "bool"
+					},
+					{
+						"internalType": "enum LibProject.ProjectState",
+						"name": "state",
+						"type": "uint8"
 					}
 				],
-				"indexed": false,
-				"internalType": "struct LibProject.ProParm",
+				"internalType": "struct LibProject.ReturnTask",
 				"name": "",
 				"type": "tuple"
 			}
 		],
-		"name": "updateProjectEv",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum LibProject.TaskerState",
-				"name": "",
-				"type": "uint8"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"name": "updateTaskerStateEv",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"name": "uploadAcceptStateEv",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_index",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_transIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_vfIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_fileIndex",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "_isPass",
-				"type": "bool"
-			},
-			{
-				"internalType": "string",
-				"name": "_file",
-				"type": "string"
-			}
-		],
-		"name": "validate",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -1199,7 +1251,7 @@ const abiERC20 =[
 ];
 // 利用私钥和provider创建wallet对象
 const wallet2 = new ethers.Wallet(privateKey, provider);
-const Testcontract = '0x344744a800aefc18022423e9BB6Da35BCD96a2BA';
+const Testcontract = '0x84f0a2F69202A49682fB0f8e6A6B7bb163e37A13';
 
 // const WETHAddress = '0xD909178CC99d318e4D46e7E66a972955859670E1';
 
