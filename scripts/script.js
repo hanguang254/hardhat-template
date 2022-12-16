@@ -3,7 +3,7 @@ const { ethers } = require('ethers');
 
 
 // 连接以太坊测试网
-const provider = new ethers.providers.JsonRpcProvider(`${process.env.MOONBRAN_API}`);
+const provider = new ethers.providers.JsonRpcProvider(process.env.ALCHEMY_API_KEY);
 //私钥
 privateKey = process.env.GOERLI_PRIVATE_KEY;
 
@@ -1251,9 +1251,10 @@ const abiERC20 =[
 ];
 // 利用私钥和provider创建wallet对象
 const wallet2 = new ethers.Wallet(privateKey, provider);
-const Testcontract = '0x84f0a2F69202A49682fB0f8e6A6B7bb163e37A13';
+const Testcontract = '0x42E69D1995beA486409077E4671834C6DAd134E7';
 
-// const WETHAddress = '0xD909178CC99d318e4D46e7E66a972955859670E1';
+// moombean = "0x84f0a2F69202A49682fB0f8e6A6B7bb163e37A13"
+// goerli = "0x42E69D1995beA486409077E4671834C6DAd134E7"
 
 const contractTest = new ethers.Contract(Testcontract, abiERC20, wallet2);
 
@@ -1267,20 +1268,20 @@ const main = async () => {
   console.log('测试合约地址：',contratAddress);
 
   let overrides = {
-    gasLimit:5,
+	value: ethers.utils.parseEther("1"),
+    gasLimit:3000000,
     gasPrice:3000000,
   }
-  //发布任务
-  const a = await contractTest.postProject([123123,"introduce","need",123123,"sourceLanguage","goalLanguage",["prefer1"],0,100,true,true,1,[[["name",1,1,0,0,0,"path"],1,"info",1,1]]],overrides);
-  console.log(`返回值：${a}`);
+//   发布任务
+  const a = await contractTest.postProject(
+	[12334,"introduce","need",123434,2,4,[1,2,3],0,100,true,false,1,[[["name",1,1,0,0,0,"path"],1,"info",1,1]]]
+	,overrides);
+//   console.log(`返回值：${ethers.utils.formatEther(a)}`);
+	console.log(`返回值：${a}`);
 
-  //acceptTrans
-//   const acceptTrans = await contractTest.acceptTrans(1,1,1,1,overrides);
-//   console.log(`总共：${acceptTrans}`);
+//   //acceptForTranslator
+//   const acceptForTranslator = await contractTest.acceptForTranslator(1,[0],overrides);
+//   console.log(`返回值：${acceptForTranslator}`);
 
-
-  // // 扣除赏金
-  // const b = await contractTest.deduct(1,2,3,4,true,overrides);
-  // console.log('返回值',b)
 };
 main();
