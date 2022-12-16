@@ -1277,7 +1277,7 @@ const main = async () => {
 	[12334,"introduce","need",123434,2,4,[1,2,3],0,100,true,false,1,[[["name",1,1,0,0,0,"path"],1,"info",1,1]]]
 	,overrides);
 //   console.log(`返回值：${ethers.utils.formatEther(a)}`);
-	console.log(`返回值：${a}`);
+	console.log(`返回值：${JSON.ifytostring(a)}`);
 
 //   //acceptForTranslator
 //   const acceptForTranslator = await contractTest.acceptForTranslator(1,[0],overrides);
