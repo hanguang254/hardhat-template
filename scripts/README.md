@@ -1,8 +1,8 @@
-# Sample Hardhat Project
+ARB_claim
+空投领取脚本
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
+执行语句
+npx hardhat run scripts/ARB_claim.js --network arbitrum
 
 ```shell
 npx hardhat help
@@ -18,5 +18,3 @@ npm install dotenv
 
 安装ethersjs
 npm install --save ethers
-
-

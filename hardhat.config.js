@@ -21,6 +21,14 @@ module.exports = {
     moonbean:{
       url:`${process.env.MOONBRAN_API}`,
       accounts:[process.env.GOERLI_PRIVATE_KEY]
+    },
+    arbitrum:{
+      url:`${process.env.ARBitrum_API}`,
+      accounts:[process.env.GOERLI_PRIVATE_KEY]
+    },
+    zksync2:{
+      url:`${process.env.ZKSYNC_API}`,
+      accounts:[process.env.GOERLI_PRIVATE_KEY]
     }
   },
 };
