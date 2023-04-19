@@ -80,7 +80,7 @@ contractTest.postTask(params2,gasverd)
     console.error("Error posting task:", err);
   });	
 };
-posttask(); //以校验
+// posttask(); //以校验
 
 
 
@@ -96,3 +96,77 @@ async function getindex(){
 	console.log('总任务数',index);
 }
 getindex(); //以校验
+
+
+
+ //翻译者接受任务
+ async function acceptForTranslator() {
+	const index = 14;  //任务索引   
+  	console.log(index);
+ 	const fileindex= [0] //文件索引
+	contractTest.acceptForTranslator(index,fileindex,{
+		gasPrice: ethers.utils.parseUnits('30', 'gwei'), // 设置 gasPrice
+		gasLimit: 3000000, // 设置 gasLimit
+	  }).then((tx) =>{
+		console.log("Transaction hash:", tx.hash);
+		return tx.wait();
+	  }).then((receipt) => {
+		if(receipt.status == 1){
+			console.log("翻译者接受任务成功:", receipt);
+		}
+	  })
+	  .catch((err) => {
+		console.error("Error:", err);
+	  });
+
+  }
+  // acceptForTranslator();   //以校验
+
+
+  //流标判断
+function endTransAccept(index){
+      
+      contractTest.endTransAccept(index,{
+        gasPrice: ethers.utils.parseUnits('10', 'gwei'), // 设置 gasPrice
+        gasLimit: 3000000, // 设置 gasLimit
+        }).then((tx) =>{
+        console.log("Transaction hash:", tx.hash);
+        return tx.wait();
+      }).then((receipt) => {
+        console.log("status:",receipt.status);
+        if(receipt.status == 1){
+            console.log("流标判断:", receipt);
+            // overTimeTrans(index);
+        }
+        
+      })
+      .catch((err) => {
+        console.error("Error :", err);
+      })
+  }
+  // endTransAccept(14); //以校验
+
+
+  //翻译超时
+function overTimeTrans(index){
+      const taskaddress = "0x80909d4FD0EeE126C7F1788DF2745B6a19977E30"
+      contractTest.overTimeTrans(index,taskaddress,{
+        gasPrice: ethers.utils.parseUnits('10', 'gwei'), // 设置 gasPrice
+        gasLimit: 3000000, // 设置 gasLimit
+        }).then((tx) =>{
+          console.log("Transaction hash:", tx.hash);
+          return tx.wait();
+        }).then((receipt) => {
+          console.log("status:",receipt.status);
+          if(receipt.status == 1){
+            console.log("翻译超时:", receipt);
+          }
+        })
+        .catch((err) => {
+        console.error("Error :", err);
+        })
+  }
+overTimeTrans(14); //以校验
+
+
+

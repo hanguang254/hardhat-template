@@ -80,7 +80,7 @@ contractTest.postTask(params2,gasverd)
     console.error("Error posting task:", err);
   });	
 };
-posttask(); //以校验
+// posttask(); //以校验
 
 
 //获取任务信息
@@ -141,7 +141,7 @@ getindex(); //以校验
 	const contratAddress =await contractTest.address;
     console.log('测试合约地址：',contratAddress);
 
-	const _index = 12;      //任务索引
+	const _index = 14;      //任务索引
 	const _fileIndex = 0;  
 	const filedate = "dhjsdhfjsdf";
 	contractTest.sumbitTaskTrans(_index,_fileIndex,filedate,{
@@ -159,7 +159,7 @@ getindex(); //以校验
 	  })
 	
   }
-//   submitForTranslator(); //以校验
+  submitForTranslator(); //以校验
 
 //校验任务
 async function validate() {
