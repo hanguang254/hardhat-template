@@ -25,4 +25,6 @@ npm install --save ethers
 npm install axios
 
 
+##.env 文件管理私钥 创建再根目录下
+
 
