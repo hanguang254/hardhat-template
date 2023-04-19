@@ -12,7 +12,7 @@ const axios = require('axios');
 
 function tokeninfo(){
 
-    axios.get("https://api.bebop.xyz/arbitrum/v1/token-info")
+    axios.get("https://api.bebop.xyz/polygon/v1/token-info")
     .then((res) => {
         console.log("查询价格成功",res.data);
     }).catch((err) => {
@@ -25,9 +25,9 @@ function tokeninfo(){
 function TokenQuote(amount,buyToken,sellToken){
     const data = axios.get('https://api.bebop.xyz/polygon/v1/quote',{
         params:{
-        buy_tokens:buyToken,
-        sell_tokens:sellToken,
-        buy_amounts:amount,
+        buy_tokens:buyToken.toString(),
+        sell_tokens:sellToken.toString(),
+        buy_amounts:amount.toString(),
         taker_address:"0x6971b57a29764eD7af4A4a1ED7a512Dde9369Ef6", //需要修改为自己的地址
         }
     }).then((res) => {
@@ -36,9 +36,12 @@ function TokenQuote(amount,buyToken,sellToken){
     // console.log(Id);
     return data;
 }
-TokenQuote(100,"USDT","USDC").then((res) => {
+TokenQuote(100,["USDT"],["USDC","DAI"]).then((res) => {
     console.log(res);
 })
+
+//获取报价 多对一
+function ManyTokenQuote(amount,buyToken,sellToken){}
 
 //变量保存
 let signmes ={
@@ -151,7 +154,7 @@ async function getsigner(amount,buyToken,sellToken){
 
 }
 
-// 请求交易
+// 请求交易 一对一
 function  swap_Token(amount,buyToken,sellToken){
         getsigner(amount,buyToken,sellToken).then((res) => {
             // console.log("签名2",res);
