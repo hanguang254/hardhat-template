@@ -43,7 +43,7 @@ const posttask = async () => {
 
 
   //参数
-  const releaseTime = Date.now(); // 发布时间（24 小时后）
+  const releaseTime = Date.now(); // 发布时间
   console.log(releaseTime);
   const deadline = Date.now() + 10 * 60 * 1000; // 截止时间（当前时间的10分钟后）
 
