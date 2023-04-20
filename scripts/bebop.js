@@ -9,6 +9,7 @@ const axios = require('axios');
 
 
 //Bebop交易脚本
+const provider = new ethers.providers.JsonRpcProvider(process.env.polygon_API);
 
 function tokeninfo(){
 
@@ -28,7 +29,7 @@ function TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
         buy_tokens:buyToken.toString(),
         sell_tokens:sellToken.toString(),
         buy_amounts:amount.toString(),
-        bull_tokens_ratios:buy_ratios.toString(),   //买入比例  传入空数组 使用默认值
+        bull_tokens_ratios:buy_ratios.toString(),   //买入比例总和为1  传入空数组 使用默认值
         sell_tokens_ratios:sell_ratios.toString(),
         taker_address:"0x6971b57a29764eD7af4A4a1ED7a512Dde9369Ef6", //需要修改为自己的地址
         }
@@ -151,10 +152,10 @@ async function getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios='')
             receiver:signmes.receiver,
         }
         
-//    console.log("签名value",value);
-
+    //    console.log("签名value",value);
+        //process.env.polygon_API 节点地址
     const provider = new ethers.providers.JsonRpcProvider(process.env.polygon_API);
-    // Create a signer object 
+    // Create a signer object   //process.env.ZHU_PRIVATE_KEY 更换自己的私钥
     const signer = new ethers.Wallet(process.env.ZHU_PRIVATE_KEY, provider);
     
     // 为安全起见暂不写自动授权
@@ -187,9 +188,17 @@ function  swap_Token(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
                 quote_id:signmes.quoteId,
             }).then((res) => {
                 console.log("==================>请求成功",res.data);
-                if(res.data.status == "Success"){
-                    console.log("==================>等待交易完成，Hash：",res.data.txHash);
-                }
+                provider.getTransaction(res.data.txHash)
+                .then((tx) => {
+                    if (tx && tx.blockNumber) {
+                    console.log('交易已经被确认在区块 ' + tx.blockNumber);
+                    } else {
+                    console.log('交易还未被处理');
+                    }
+                })
+                .catch((err) => {
+                    console.log('出现错误: ', err);
+                });
             }).catch((err) => {
                 console.error("请求失败",err);
             })
