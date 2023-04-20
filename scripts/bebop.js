@@ -36,12 +36,32 @@ function TokenQuote(amount,buyToken,sellToken){
     // console.log(Id);
     return data;
 }
-TokenQuote(100,["USDT"],["USDC","DAI"]).then((res) => {
-    console.log(res);
+TokenQuote(100,["USDT"],["USDC"]).then((res) => {
+    console.log("一对一",res);
 })
 
 //获取报价 多对一
-function ManyTokenQuote(amount,buyToken,sellToken){}
+function ManyTokenQuote(amount,buyToken,sellToken,ratios){
+    const data = axios.get('https://api.bebop.xyz/polygon/v1/quote',{
+        params:{
+        buy_tokens:buyToken.toString(),
+        sell_tokens:sellToken.toString(),
+        buy_amounts:amount.toString(),
+        sell_tokens_ratios:ratios.toString(),  //售卖比例
+        taker_address:"0x6971b57a29764eD7af4A4a1ED7a512Dde9369Ef6", //需要修改为自己的地址
+        }
+    }).then((res) => {
+    
+        return res.data;
+    })
+    return data;
+}
+
+ManyTokenQuote(100,["USDT"],["USDC","DAI"],[0.5,0.5]).then((res) => {
+
+    console.log("多对一",res);
+})
+
 
 //变量保存
 let signmes ={
@@ -60,7 +80,7 @@ let signmes ={
 //获取签名
 async function getsigner(amount,buyToken,sellToken){
 
-        // 获取最新报价
+        // 获取一对一最新报价
         await TokenQuote(amount,buyToken,sellToken).then((res) => {
             // console.log(res);
             console.log("==================>报价Id",res.quoteId);
@@ -174,10 +194,8 @@ function  swap_Token(amount,buyToken,sellToken){
     
 }
 
+//交易 多对一
 
-// for (let i = 0; i < 5; i++) {
-//     swap_Token(1, "USDT", "WETH");
+// 交易 一对多
 
-//     swap_Token(0.00064, "WETH", "USDT");
-// }
 
