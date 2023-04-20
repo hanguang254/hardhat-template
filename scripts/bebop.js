@@ -158,16 +158,6 @@ async function getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios='')
     // Create a signer object   //process.env.ZHU_PRIVATE_KEY 更换自己的私钥
     const signer = new ethers.Wallet(process.env.ZHU_PRIVATE_KEY, provider);
     
-    // 为安全起见暂不写自动授权
-    // const Bebop ="0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c";//交互合约地址
-    // const WETH= "0x8b194bEae1d3e0788A1a35173978001ACDFba668"; //合约地址
-    // const USDT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
-
-    // const WETHContract = new ethers.Contract(WETH, WETHABI, signer);
-    
-    // //授权额度
-    // const approve = await WETHContract.approve(Bebop,)
-
 
     //生成签名
     signature = await signer._signTypedData(domain, types, value, primaryType);
