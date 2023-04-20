@@ -81,10 +81,10 @@ let signmes ={
 }
 
 //获取签名
-async function getsigner(amount,buyToken,sellToken){
+async function getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
 
         // 获取一对一最新报价
-        await TokenQuote(amount,buyToken,sellToken).then((res) => {
+        await TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios='').then((res) => {
             // console.log(res);
             console.log("==================>报价Id",res.quoteId);
             
@@ -177,9 +177,9 @@ async function getsigner(amount,buyToken,sellToken){
 
 }
 
-// 请求交易 一对一
-function  swap_Token(amount,buyToken,sellToken){
-        getsigner(amount,buyToken,sellToken).then((res) => {
+// 请求交易 
+function  swap_Token(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
+        getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios='').then((res) => {
             // console.log("签名2",res);
             console.log("==================>正在执行交易");
             axios.post("https://api.bebop.xyz/polygon/v1/order",{
@@ -197,8 +197,6 @@ function  swap_Token(amount,buyToken,sellToken){
     
 }
 
-//交易 多对一
 
-// 交易 一对多
 
 
