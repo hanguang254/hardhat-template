@@ -21,13 +21,15 @@ function tokeninfo(){
 }
 // tokeninfo();
 
-//获取报价 一对一
-function TokenQuote(amount,buyToken,sellToken){
+//获取报价 
+function TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
     const data = axios.get('https://api.bebop.xyz/polygon/v1/quote',{
         params:{
         buy_tokens:buyToken.toString(),
         sell_tokens:sellToken.toString(),
         buy_amounts:amount.toString(),
+        bull_tokens_ratios:buy_ratios.toString(),   //买入比例  传入空数组 使用默认值
+        sell_tokens_ratios:sell_ratios.toString(),
         taker_address:"0x6971b57a29764eD7af4A4a1ED7a512Dde9369Ef6", //需要修改为自己的地址
         }
     }).then((res) => {
@@ -36,8 +38,9 @@ function TokenQuote(amount,buyToken,sellToken){
     // console.log(Id);
     return data;
 }
-TokenQuote(100,["USDT"],["USDC"]).then((res) => {
-    console.log("一对一",res);
+//多对一报价
+TokenQuote(100,["USDT"],["USDC","DAI"],[],[0.5,0.5]).then((res) => {
+    console.log("获取报价",res);
 })
 
 //获取报价 多对一
@@ -57,10 +60,10 @@ function ManyTokenQuote(amount,buyToken,sellToken,ratios){
     return data;
 }
 
-ManyTokenQuote(100,["USDT"],["USDC","DAI"],[0.5,0.5]).then((res) => {
+// ManyTokenQuote(100,["USDT"],["USDC","DAI"],[0.5,0.5]).then((res) => {
 
-    console.log("多对一",res);
-})
+//     console.log("多对一",res);
+// })
 
 
 //变量保存
