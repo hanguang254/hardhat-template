@@ -42,9 +42,9 @@ function TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
     return data;
 }
 //报价 支持一对一 多对一 一对多
-TokenQuote(100,["USDT"],["USDC","DAI"],[],[0.5,0.5]).then((res) => {
-    console.log("获取报价",res);
-})
+// TokenQuote(100,["USDT"],["USDC","DAI"],[],[0.5,0.5]).then((res) => {
+//     console.log("获取报价",res);
+// })
 
 
 
@@ -62,11 +62,13 @@ let signmes ={
 
 }
 
-//获取签名
-async function getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
+getsigner(100,["USDT"],["USDC","DAI"],[],[0.5,0.5])
 
+//获取签名
+async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
+        
         // 获取一对一最新报价
-        await TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios='').then((res) => {
+        await TokenQuote(amount,buyToken,sellToken,butratios,sellratios).then((res) => {
             // console.log(res);
             console.log("==================>报价Id",res.quoteId);
             
@@ -141,16 +143,18 @@ async function getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios='')
 
     //生成签名
     signature = await signer._signTypedData(domain, types, value, primaryType);
-
+    // console.log("签名1",signature);
     console.log("==================>签名生成成功！");
     
     return signature;
 
 }
 
+
+
 // 请求交易 
-function  swap_Token(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
-        getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios='').then((res) => {
+function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
+        getsigner(amount,buyToken,sellToken,butratios,sellratios).then((res) => {
             // console.log("签名2",res);
             console.log("==================>正在执行交易");
             axios.post("https://api.bebop.xyz/polygon/v1/order",{
