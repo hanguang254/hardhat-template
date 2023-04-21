@@ -9,6 +9,8 @@ const axios = require('axios');
 
 
 //Bebop交易脚本
+
+//process.env.polygon_API 节点地址
 const provider = new ethers.providers.JsonRpcProvider(process.env.polygon_API);
 
 function tokeninfo(){
@@ -132,8 +134,7 @@ async function getsigner(amount,buyToken,sellToken,buy_ratios='',sell_ratios='')
         }
         
     //    console.log("签名value",value);
-        //process.env.polygon_API 节点地址
-    const provider = new ethers.providers.JsonRpcProvider(process.env.polygon_API);
+
     // Create a signer object   //process.env.ZHU_PRIVATE_KEY 更换自己的私钥
     const signer = new ethers.Wallet(process.env.ZHU_PRIVATE_KEY, provider);
     
