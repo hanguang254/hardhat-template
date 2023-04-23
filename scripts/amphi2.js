@@ -8,7 +8,7 @@ const abi = JSON.parse(fs.readFileSync(path.join(__dirname, 'abi', 'impl.abi')))
 // console.log(abi);
 
 // 连接以测试网
-const provider = new ethers.providers.JsonRpcProvider(process.env.MOONBRAN_API);
+const provider = new ethers.providers.JsonRpcProvider(process.env.MUMBAI);
 //私钥
 privateKey = process.env.GOERLI_PRIVATE_KEY;
 
@@ -16,7 +16,7 @@ privateKey = process.env.GOERLI_PRIVATE_KEY;
 
 // 利用私钥和provider创建wallet对象
 const wallet2 = new ethers.Wallet(privateKey, provider);
-const Testcontract = '0x470088B3daee098c40872EC5E9fd5b9f46084333';
+const Testcontract = '0x7d03027198e203F3665ae3A743998115e5f728Cf';
 const contractTest = new ethers.Contract(Testcontract, abi, wallet2);
 
 
@@ -31,7 +31,7 @@ const posttask = async () => {
   console.log('测试合约地址：',contratAddress);
 
   let gasverd = {
-	value: ethers.utils.parseEther('0.3'), // 设置 value
+	value: ethers.utils.parseEther('0.03'), // 设置 value
 	gasPrice: ethers.utils.parseUnits('60', 'gwei'), // 设置 gasPrice
 	gasLimit: 3000000, // 设置 gasLimit
   }
@@ -80,7 +80,7 @@ contractTest.postTask(params2,gasverd)
     console.error("Error posting task:", err);
   });	
 };
-// posttask(); //以校验
+posttask(); //以校验
 
 
 
@@ -122,6 +122,30 @@ getindex(); //以校验
   }
   // acceptForTranslator();   //以校验
 
+  //翻译者提交任务
+  async function submitForTranslator() {
+    const contratAddress =await contractTest.address;
+      console.log('测试合约地址：',contratAddress);
+  
+    const _index = 14;      //任务索引
+    const _fileIndex = 0;  
+    const filedate = "dhjsdhfjsdf";
+    contractTest.sumbitTaskTrans(_index,_fileIndex,filedate,{
+      gasPrice: ethers.utils.parseUnits('30', 'gwei'), // 设置 gasPrice
+      gasLimit: 3000000, // 设置 gasLimit
+      }).then((tx) =>{
+      console.log("Transaction hash:", tx.hash);
+      return tx.wait();
+      }).then((receipt) => {
+      if(receipt.status == 1){
+        console.log("翻译者提交任务成功:", receipt);
+      }
+      }).catch((err) => {
+      console.error("提交任务交易错误:", err);
+      })
+    
+    }
+    // submitForTranslator(); //以校验
 
   //流标判断
 function endTransAccept(index){
@@ -166,7 +190,32 @@ function overTimeTrans(index){
         console.error("Error :", err);
         })
   }
-overTimeTrans(17); //以校验
+// overTimeTrans(17); //以校验
+
+
+//校验者超时
+async function validate() {
+	const _index = 12;      //任务索引
+	const _trans = "0x80909d4FD0EeE126C7F1788DF2745B6a19977E30"
+	const _fileIndex = 0;  
+	const isPass = pass;
+	const file = "file";
+
+	contractTest.validate(_index,_trans,_fileIndex,isPass,file,
+		{gasPrice: ethers.utils.parseUnits('30', 'gwei')
+		,gasLimit: 3000000,}).then((tx) =>{
+			console.log("Transaction hash:", tx.hash);
+			return tx.wait();
+		}).then((receipt) => {
+			if(receipt.status == 1){
+				console.log("校验任务成功:", receipt);
+			}
+		}).catch((err) => {
+			console.error("校验任务交易错误:", err);
+		})
+}
+// validate()
+
 
 
 

@@ -29,6 +29,10 @@ module.exports = {
     zksync2:{
       url:`${process.env.ZKSYNC_API}`,
       accounts:[process.env.GOERLI_PRIVATE_KEY]
+    },
+    polygonTest:{
+      url:`${process.env.MUMBAI}`,
+      accounts:[process.env.GOERLI_PRIVATE_KEY]
     }
   },
 };

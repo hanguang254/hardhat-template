@@ -22,8 +22,8 @@
 				"type": "address"
 			},
 			{
-				"internalType": "address payable",
-				"name": "_transferAddress",
+				"internalType": "address",
+				"name": "_ercAddress",
 				"type": "address"
 			}
 		],
@@ -44,17 +44,6 @@
 			}
 		],
 		"name": "ErrorValue",
-		"type": "error"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"name": "OperationException",
 		"type": "error"
 	},
 	{
@@ -130,6 +119,19 @@
 			}
 		],
 		"name": "acceptForVerifer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_amphiAddress",
+				"type": "address"
+			}
+		],
+		"name": "addAmphiAddress",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -285,9 +287,9 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "address",
-				"name": "_address",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "_fileIndex",
+				"type": "uint256"
 			}
 		],
 		"name": "getReturnRecord",
@@ -654,6 +656,19 @@
 				"type": "address"
 			}
 		],
+		"name": "newAmphiFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newAddress",
+				"type": "address"
+			}
+		],
 		"name": "newAmphiPass",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -681,19 +696,6 @@
 			}
 		],
 		"name": "newCalculateUtils",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_address",
-				"type": "address"
-			}
-		],
-		"name": "newTransferAddress",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -769,7 +771,7 @@
 		],
 		"name": "payFine",
 		"outputs": [],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -919,7 +921,7 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -945,11 +947,6 @@
 				"type": "bool"
 			},
 			{
-				"internalType": "address",
-				"name": "_transAddress",
-				"type": "address"
-			},
-			{
 				"internalType": "string",
 				"name": "_file",
 				"type": "string"
@@ -962,7 +959,7 @@
 		],
 		"name": "receiveTask",
 		"outputs": [],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -1190,7 +1187,7 @@
 		],
 		"name": "updateTask",
 		"outputs": [],
-		"stateMutability": "payable",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

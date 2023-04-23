@@ -29,4 +29,6 @@ npm install axios
 
 MOONBRAN_API=https://rpc.api.moonbase.moonbeam.network
 
+MUMBAI=https://rpc-mumbai.maticvigil.com
+
 
