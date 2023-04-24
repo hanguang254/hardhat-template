@@ -8,15 +8,15 @@ const abi = JSON.parse(fs.readFileSync(path.join(__dirname, 'abi', 'impl.abi')))
 // console.log(abi);
 
 // 连接以测试网
-const provider = new ethers.providers.JsonRpcProvider(process.env.MOONBRAN_API);
+const provider = new ethers.providers.JsonRpcProvider(process.env.MUMBAI);
 //私钥
-privateKey = process.env.GOERLI_PRIVATE_KEY;
+privateKey = process.env.TWO_PRIVATE_KEY;
 
 
 
 // 利用私钥和provider创建wallet对象
 const wallet2 = new ethers.Wallet(privateKey, provider);
-const Testcontract = '0x470088B3daee098c40872EC5E9fd5b9f46084333';
+const Testcontract = '0xd80428C5EdB1229CEa964EE5FE64D30408DdF105';
 const contractTest = new ethers.Contract(Testcontract, abi, wallet2);
 
 
@@ -112,8 +112,8 @@ getindex(); //以校验
 
 
   //翻译者接受任务
-  async function acceptForTranslator() {
-	const index = 12;  //任务索引   
+  async function acceptForTranslator(index) {
+	// const index = 10;  //任务索引   
   	console.log(index);
  	const fileindex= [0] //文件索引
 	contractTest.acceptForTranslator(index,fileindex,{
@@ -132,16 +132,16 @@ getindex(); //以校验
 	  });
 
   }
-//   acceptForTranslator();   //以校验
+//   acceptForTranslator(13);   //以校验
 
 
 
   //翻译者提交任务
-  async function submitForTranslator() {
+  async function submitForTranslator(_index) {
 	const contratAddress =await contractTest.address;
     console.log('测试合约地址：',contratAddress);
 
-	const _index = 14;      //任务索引
+	// const _index = 14;      //任务索引
 	const _fileIndex = 0;  
 	const filedate = "dhjsdhfjsdf";
 	contractTest.sumbitTaskTrans(_index,_fileIndex,filedate,{
@@ -159,7 +159,7 @@ getindex(); //以校验
 	  })
 	
   }
-  submitForTranslator(); //以校验
+//   submitForTranslator(13); //以校验
 
 //校验任务
 async function validate() {

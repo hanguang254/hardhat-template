@@ -16,7 +16,7 @@ privateKey = process.env.GOERLI_PRIVATE_KEY;
 
 // 利用私钥和provider创建wallet对象
 const wallet2 = new ethers.Wallet(privateKey, provider);
-const Testcontract = '0x7d03027198e203F3665ae3A743998115e5f728Cf';
+const Testcontract = '0xd80428C5EdB1229CEa964EE5FE64D30408DdF105';
 const contractTest = new ethers.Contract(Testcontract, abi, wallet2);
 
 
@@ -31,7 +31,7 @@ const posttask = async () => {
   console.log('测试合约地址：',contratAddress);
 
   let gasverd = {
-	gasPrice: ethers.utils.parseUnits('2', 'gwei'), // 设置 gasPrice
+	gasPrice: ethers.utils.parseUnits('10', 'gwei'), // 设置 gasPrice
 	gasLimit: 3000000, // 设置 gasLimit
   }
   
@@ -79,7 +79,7 @@ contractTest.postTask(params2,gasverd)
     console.error("Error posting task:", err);
   });	
 };
-// posttask(); //以校验
+posttask(); //以校验
 
 
 
@@ -119,7 +119,7 @@ getindex(); //以校验
 	  });
 
   }
-  // acceptForTranslator(5);   //以校验
+//   acceptForTranslator(10);   //以校验
 
   //翻译者提交任务
   async function submitForTranslator(_index) {
@@ -144,13 +144,32 @@ getindex(); //以校验
       })
     
     }
-    // submitForTranslator(5); //以校验
+    // submitForTranslator(10); //以校验
+
+// 校验者接受任务
+async function acceptForVerifer(_index) {
+	const file = [] //文件索引
+	contractTest.acceptForVerifer(_index,file,
+	{gasPrice: ethers.utils.parseUnits('30', 'gwei')
+	,gasLimit: 3000000,}).then((tx) => {
+		console.log("Transaction hash:", tx.hash);
+		return tx.wait();
+	}).then((receipt) => {
+		if(receipt.status == 1){
+			console.log("校验者接受任务成功:", receipt);
+		}
+	})
+	.catch((err) => {
+		console.error("Error:", err);
+	});
+}
+// acceptForVerifer(13); //以校验
 
 
     //校验任务
 async function validate(_index) {
 	// const _index = 4;      //任务索引
-	const _trans = "0x80909d4FD0EeE126C7F1788DF2745B6a19977E30"
+	const _trans = "0xd39143146F68Afbe1b5b4ff7884a2eaC641F938d"
 	const _fileIndex = 5;  
 	const isPass = true;
 	const file = "file";
@@ -168,12 +187,12 @@ async function validate(_index) {
 			console.error("校验任务交易错误:", err);
 		})
 }
-validate(5)
+// validate(13)
 
 
 //校验者提交任务
-async function sumbitVf(){
-	const _index = 12;      //任务索引
+async function sumbitVf(_index){
+	// const _index = 12;      //任务索引
 	const _fileIndex = 0;
 	const _file = "file";
 
@@ -191,7 +210,7 @@ async function sumbitVf(){
 		console.error("提交任务交易错误:", err);
 	})
 }
-// sumbitVf()
+// sumbitVf(13)
 
 
 // 验收项目
@@ -201,12 +220,11 @@ async function receiveTask(_index) {
 	const _fileIndex = 0;
 	const _isPass = true;
 	const _file = "";
-	const illustrate="";
+	// const illustrate="";
 
-	contractTest.receiveTask(_index,_taskerIndex,_fileIndex,_isPass,_file,illustrate,
-		{
-			value: ethers.utils.parseEther('0.7'), // 设置 value
-			gasPrice: ethers.utils.parseUnits('1', 'gwei'), // 设置 gasPrice
+	contractTest.receiveTask(_index,_taskerIndex,_fileIndex,_isPass,_file,
+		  {
+			gasPrice: ethers.utils.parseUnits('50', 'gwei'), // 设置 gasPrice
 			gasLimit: 3000000, // 设置 gasLimit
 		  }).then((tx) =>{
 			console.log("Transaction hash:", tx.hash);
@@ -219,7 +237,7 @@ async function receiveTask(_index) {
 			console.error("验收项目交易错误:", err);
 		  })
 }
-// receiveTask()
+receiveTask(13)
 
 
 
@@ -247,12 +265,12 @@ function endTransAccept(index){
         console.error("Error :", err);
       })
   }
-  // endTransAccept(2); //以校验
+//   endTransAccept(2); //以校验
 
 
   //翻译超时
 function overTimeTrans(index){
-      const taskaddress = "0x80909d4FD0EeE126C7F1788DF2745B6a19977E30"
+      const taskaddress = "0xd39143146F68Afbe1b5b4ff7884a2eaC641F938d"
       contractTest.overTimeTrans(index,taskaddress,{
         gasPrice: ethers.utils.parseUnits('10', 'gwei'), // 设置 gasPrice
         gasLimit: 3000000, // 设置 gasLimit
@@ -269,19 +287,19 @@ function overTimeTrans(index){
         console.error("Error :", err);
         })
   }
-// overTimeTrans(1); //以校验
+// overTimeTrans(7); //以校验
 
 
 //校验者超时
 async function validate(_index) {
 	// const _index = 12;      //任务索引
-	const _trans = "0x80909d4FD0EeE126C7F1788DF2745B6a19977E30"
+	const _trans = "0xd39143146F68Afbe1b5b4ff7884a2eaC641F938d"
 	const _fileIndex = 0;  
 	const isPass = true;
 	const file = "file";
 
 	contractTest.validate(_index,_trans,_fileIndex,isPass,file,
-		{gasPrice: ethers.utils.parseUnits('10', 'gwei')
+		{gasPrice: ethers.utils.parseUnits('20', 'gwei')
 		,gasLimit: 3000000,}).then((tx) =>{
 			console.log("Transaction hash:", tx.hash);
 			return tx.wait();
@@ -293,7 +311,10 @@ async function validate(_index) {
 			console.error("校验任务交易错误:", err);
 		})
 }
-// validate(4)
+// validate(12) //已校验
+
+
+
 
 
 

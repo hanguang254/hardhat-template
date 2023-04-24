@@ -167,6 +167,12 @@ function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
                 .then((tx) => {
                     if (tx && tx.blockNumber) {
                     console.log('交易已经被确认在区块 ' + tx.blockNumber);
+                    // const iface = new ethers.Interface([
+                    //     "function transfer(address, uint) public returns (bool)",
+                    //     ])
+                    // let parsedTx = iface.parseTransaction(tx)
+                    // console.log("pending交易详情解码：")
+                    // console.log(parsedTx);
                     } else {
                     console.log('交易还未被处理');
                     }
