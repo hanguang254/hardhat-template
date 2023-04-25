@@ -31,7 +31,7 @@ const posttask = async () => {
   console.log('测试合约地址：',contratAddress);
 
   let gasverd = {
-	gasPrice: ethers.utils.parseUnits('10', 'gwei'), // 设置 gasPrice
+	gasPrice: ethers.utils.parseUnits('20', 'gwei'), // 设置 gasPrice
 	gasLimit: 3000000, // 设置 gasLimit
   }
   
@@ -79,8 +79,52 @@ contractTest.postTask(params2,gasverd)
     console.error("Error posting task:", err);
   });	
 };
-posttask(); //以校验
+// posttask(); //以校验
 
+//修改任务
+function updateTask(index) {
+	//参数
+	const releaseTime = Date.now(); // 发布时间
+	console.log(releaseTime);
+	const deadline = Date.now() + 10 * 60 * 1000; // 截止时间（当前时间的10分钟后）
+  
+  const params2 =  [
+	  releaseTime,
+	  "修改任务",
+	  "need",
+	  deadline,
+	  2,
+	  5,
+	  [7, 8, 9],
+	  6,
+	  1000,
+	  true,
+	  false,
+	  0,
+	  [[["file.txt", 1024, 0, 0, 500, 0, "path"], 1, "info", 0, 1]],
+  ]
+  
+  
+  //使用contract.postTask函数发布任务，将返回一个Promise对象
+  contractTest.postTask(index,params2,{
+	gasPrice: ethers.utils.parseUnits('20', 'gwei'), // 设置 gasPrice
+	gasLimit: 3000000, // 设置 gasLimit
+  })
+	.then((tx) => {
+	  console.log("Transaction hash:", tx.hash);
+	  return tx.wait();
+	})
+	.then((receipt) => {
+	  if(receipt.status == 1){
+		  console.log("修改任务成功:", receipt);
+	  }
+	  
+	})
+	.catch((err) => {
+	  console.error("Error posting task:", err);
+	});
+}
+// updateTask(13)
 
 
 //查询总任务数量
@@ -237,9 +281,21 @@ async function receiveTask(_index) {
 			console.error("验收项目交易错误:", err);
 		  })
 }
-receiveTask(13)
+// receiveTask(13)
 
-
+//任务完成
+function completedTask(index){
+	contractTest.completedTask(index,
+		{gasPrice: ethers.utils.parseUnits('50', 'gwei'), // 设置 gasPrice
+		gasLimit: 3000000, // 设置 gasLimit
+		}
+		).then((tx)=>{
+			console.log("HASH",tx.hash)
+			return tx.wait()
+		}).catch((err)=>{
+			console.log("error:",err)
+		})
+}
 
 
 
@@ -293,7 +349,7 @@ function overTimeTrans(index){
 //校验者超时
 async function validate(_index) {
 	// const _index = 12;      //任务索引
-	const _trans = "0xd39143146F68Afbe1b5b4ff7884a2eaC641F938d"
+	const _trans = "0xd39143146F68Afbe1b5b4ff7884a2eaC641F938d" //翻译者地址
 	const _fileIndex = 0;  
 	const isPass = true;
 	const file = "file";
@@ -313,9 +369,54 @@ async function validate(_index) {
 }
 // validate(12) //已校验
 
+//关闭任务
+function closeTask(index){
+	contractTest.closeTask(index,
+		{gasPrice: ethers.utils.parseUnits('20', 'gwei')
+		,gasLimit: 3000000,}
+		).then((tx)=>{
+			console.log("交易哈希：",tx.hash)
+			return tx.wait();
+		}).then((receipt)=>{
+			if(receipt.status==1){
+				console.log("关闭成功")
+			}
+		})
+		.catch((err)=>{
+			console.log("error",err)
+		})
+}
+
+//关闭文件
+function closeFileState(index){
+	const fileindex = 0;//文件索引
+
+	contractTest.closeFileState(index,fileindex,
+		{gasPrice: ethers.utils.parseUnits('20', 'gwei')
+		,gasLimit: 3000000,}
+		).then((tx) =>{
+			console.log("Transaction hash:", tx.hash);
+			return tx.wait();
+		}).then((receipt) => {
+			if(receipt.status == 1){
+				console.log("关闭任务成功:", receipt);
+			}
+		})
+		.catch((err) => {
+			console.error("关闭任务交易错误:", err);
+		})
+}
+// closeFileState(13)
 
 
-
-
-
+//支付罚金
+function payFine(address){
+	contractTest.payFine(address).then((tx)=>{
+		console.log("交易哈希：",tx.hash)
+		return tx.wait();
+	}).catch((err)=>{
+		console.log("error",err)
+	})
+}
+// payFine("0x80909d4FD0EeE126C7F1788DF2745B6a19977E30")
 

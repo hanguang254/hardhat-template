@@ -164,19 +164,24 @@ function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
             }).then((res) => {
                 console.log("==================>请求成功",res.data);
                 provider.getTransaction(res.data.txHash)
-                .then((tx) => {
-                    if (tx && tx.blockNumber) {
-                    console.log('交易已经被确认在区块 ' + tx.blockNumber);
-                    // const iface = new ethers.Interface([
-                    //     "function transfer(address, uint) public returns (bool)",
-                    //     ])
-                    // let parsedTx = iface.parseTransaction(tx)
-                    // console.log("pending交易详情解码：")
-                    // console.log(parsedTx);
-                    } else {
-                    console.log('交易还未被处理');
-                    }
-                })
+                    .then((tx) => {
+                        if (tx && tx.blockNumber) {
+                        console.log('交易已经被确认在区块 ' + tx.blockNumber);
+                        //解码交易
+                        // const iface = new ethers.Interface([
+                        //     "struct AggregateOrder {uint256 expiry,address taker_address,address[] maker_addresses,uint256[] maker_nonces,address[][] taker_tokens,address[][] maker_tokens,uint256[][] taker_amounts,uint256[][] maker_amounts,address receiver} ",
+                        //     "enum SignatureType {EIP712,EIP1271,ETHSIGN}",
+                        //     "struct Signature {SignatureType signatureType,bytes signatureBytes,}",
+                        //     "function SettleAggregateOrder(AggregateOrder memory order,bytes memory takerSig,Signature[] memory makerSigs) public payable override returns (bool)",
+                        //     ])
+                        // let parsedTx = iface.parseTransaction(tx)
+                        // console.log("pending交易详情解码：")
+                        // console.log(parsedTx);
+                        // } else {
+                        // console.log('交易还未被处理');
+
+                        }
+                    })
                 .catch((err) => {
                     console.log('出现错误: ', err);
                 });
