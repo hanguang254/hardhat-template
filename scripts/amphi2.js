@@ -79,7 +79,7 @@ contractTest.postTask(params2,gasverd)
     console.error("Error posting task:", err);
   });	
 };
-// posttask(); //以校验
+posttask(); //以校验
 
 //修改任务
 function updateTask(index) {
@@ -387,6 +387,17 @@ function closeTask(index){
 		})
 }
 
+//查询文件状态
+function getFileState(index){
+	const fileindex = 0;//文件索引
+	contractTest.getFileState(index,fileindex).then((res)=>{
+		console.log("文件状态：",res)
+		return res.wait()
+	}).catch((err)=>{
+		console.log("error",err)
+	})
+}
+
 //关闭文件
 function closeFileState(index){
 	const fileindex = 0;//文件索引
@@ -420,3 +431,34 @@ function payFine(address){
 }
 // payFine("0x80909d4FD0EeE126C7F1788DF2745B6a19977E30")
 
+
+//查询打回信息
+
+function getReturnRecord(index){
+		const fileindex = 0;
+		contractTest.getReturnRecord(index,fileindex,
+			{gasPrice: ethers.utils.parseUnits('20', 'gwei')
+			,gasLimit: 3000000,}
+		).then((tx)=>{
+			console.log("交易哈希：",tx.hash)
+			return tx.wait();
+		}).catch((err)=>{
+			console.log("error",err)
+		})
+}
+
+// getReturnRecord(13)
+
+
+//查询账户是否处于可转账状态
+
+function getAccountState(address){
+	contractTest.getAccountState(address).then((res)=>{
+		console.log("账户状态：",res)
+		return res.wait()
+	}).catch((err)=>{
+		console.log("error",err)
+	})
+}
+
+getAccountState("0x80909d4FD0EeE126C7F1788DF2745B6a19977E30")

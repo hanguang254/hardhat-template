@@ -9,9 +9,11 @@ const axios = require('axios');
 
 
 //Bebop交易脚本
+//此脚本使用需自己前往区块链浏览器授权交易代币额度
+
 
 //process.env.polygon_API 节点地址
-const provider = new ethers.providers.JsonRpcProvider(process.env.polygon_API);
+const provider = new ethers.providers.JsonRpcProvider(process.env.POLYGON_API);
 
 function tokeninfo(){
 
@@ -25,15 +27,20 @@ function tokeninfo(){
 // tokeninfo();
 
 //获取报价 
-function TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
+async function TokenQuote(buyamount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
+
+    //获取地址
+    let account = new ethers.Wallet(process.env.ZHU_PRIVATE_KEY)
+    console.log(`==================>交易地址:${account.address}`)
     const data = axios.get('https://api.bebop.xyz/polygon/v1/quote',{
         params:{
+        buy_amounts:buyamount.toString(),
+        // sell_amounts:sellamount.toString(),    
         buy_tokens:buyToken.toString(),
         sell_tokens:sellToken.toString(),
-        buy_amounts:amount.toString(),
         bull_tokens_ratios:buy_ratios.toString(),   //买入比例总和为1  传入空数组 使用默认值
         sell_tokens_ratios:sell_ratios.toString(),
-        taker_address:"0x6971b57a29764eD7af4A4a1ED7a512Dde9369Ef6", //需要修改为自己的地址
+        taker_address:account.address, //需要修改为自己的地址
         }
     }).then((res) => {
         return res.data;
@@ -41,11 +48,15 @@ function TokenQuote(amount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
     // console.log(Id);
     return data;
 }
-//报价 支持一对一 多对一 一对多
-// TokenQuote(100,["USDT"],["USDC","DAI"],[],[0.5,0.5]).then((res) => {
+//报价 支持一对一 多对一
+// TokenQuote(100,["USDT"],["WMATIC","USDC"],[],[0.5,0.5]).then((res) => {
 //     console.log("获取报价",res);
 // })
 
+//一对多  可以使用卖出比例代替数量
+// TokenQuote([0.5,0.5],["USDT","DAI"],["WMATIC"]).then((res) => {
+//     console.log("获取报价",res);
+// })
 
 
 //变量保存
@@ -62,7 +73,7 @@ let signmes ={
 
 }
 
-// getsigner(100,["USDT"],["USDC","DAI"],[],[0.5,0.5])
+// getsigner([0.5,0.5],["USDT","DAI"],["USDC"],[],[])
 
 //获取签名
 async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
@@ -96,7 +107,7 @@ async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
             name: "BebopAggregationContract",
             version: "1",
             chainId: 137,
-            verifyingContract: "0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c"
+            verifyingContract: "0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c" //Bebop合约地址
         }
 
     const   primaryType = 'AggregateOrder';
@@ -154,43 +165,57 @@ async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
 
 
 // 请求交易 
-function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
-        getsigner(amount,buyToken,sellToken,butratios,sellratios).then((res) => {
+async function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
+        await getsigner(amount,buyToken,sellToken,butratios,sellratios).then((res) => {
             // console.log("签名2",res);
             console.log("==================>正在执行交易");
             axios.post("https://api.bebop.xyz/polygon/v1/order",{
                 signature:res,
                 quote_id:signmes.quoteId,
             }).then((res) => {
-                console.log("==================>请求成功",res.data);
-                provider.getTransaction(res.data.txHash)
-                    .then((tx) => {
-                        if (tx && tx.blockNumber) {
-                        console.log('交易已经被确认在区块 ' + tx.blockNumber);
-                        //解码交易
-                        // const iface = new ethers.Interface([
-                        //     "struct AggregateOrder {uint256 expiry,address taker_address,address[] maker_addresses,uint256[] maker_nonces,address[][] taker_tokens,address[][] maker_tokens,uint256[][] taker_amounts,uint256[][] maker_amounts,address receiver} ",
-                        //     "enum SignatureType {EIP712,EIP1271,ETHSIGN}",
-                        //     "struct Signature {SignatureType signatureType,bytes signatureBytes,}",
-                        //     "function SettleAggregateOrder(AggregateOrder memory order,bytes memory takerSig,Signature[] memory makerSigs) public payable override returns (bool)",
-                        //     ])
-                        // let parsedTx = iface.parseTransaction(tx)
-                        // console.log("pending交易详情解码：")
-                        // console.log(parsedTx);
-                        // } else {
-                        // console.log('交易还未被处理');
-
-                        }
-                    })
-                .catch((err) => {
-                    console.log('出现错误: ', err);
-                });
+                if("txHash" in res.data){
+                    console.log("==================>接口请求成功");
+                    console.log("==================>哈希值",res.data.txHash);
+                    provider.getTransaction(res.data.txHash)
+                        .then((tx) => {
+                            return tx.wait();
+                        }).then(()=>{
+                            if(res.data.status = 'Success'){
+                                console.log('==================>交易完成')
+                            }
+                        })
+                        .catch((err) => {
+                            console.log('出现错误: ', err);
+                        });
+                }else{
+                    console.log("==================>请求失败",res.data);
+                }
             }).catch((err) => {
                 console.error("请求失败",err);
             })
         });
     
 }
+
+// swap_Token(购买数量,买入币种,卖出币种,买入比例,卖出比例)
+// swap_Token([10,10],["USDT","USDC"],["WMATIC"],[],[])
+
+// swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
+
+for(let i =0 ;i<=4;i++){
+    if (i == 4){
+        console.log(i)
+        swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
+    }else{
+        setTimeout(() => {
+            console.log("==================>正在执行循环")
+            swap_Token([11,11],["USDT","USDC"],["WMATIC"],[],[])
+          }, 1000);
+    }
+}
+
+
+    
 
 
 

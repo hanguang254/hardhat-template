@@ -30,6 +30,10 @@ module.exports = {
       url:`${process.env.ZKSYNC_API}`,
       accounts:[process.env.GOERLI_PRIVATE_KEY]
     },
+    polygon:{
+      url:`${process.env.POLYGON_API}`,
+      accounts:[process.env.ZHU_PRIVATE_KEY]
+    },
     polygonTest:{
       url:`${process.env.MUMBAI}`,
       accounts:[process.env.GOERLI_PRIVATE_KEY]
