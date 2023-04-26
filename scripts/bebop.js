@@ -203,14 +203,18 @@ async function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
 // swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
 
 for(let i =0 ;i<=4;i++){
-    if (i == 4){
-        console.log(i)
-        swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
-    }else{
-        setTimeout(() => {
+    if (i < 4){
+        setTimeout(async() => {
             console.log("==================>正在执行循环")
-            swap_Token([11,11],["USDT","USDC"],["WMATIC"],[],[])
-          }, 1000);
+            await swap_Token([11,11],["USDT","USDC"],["WMATIC"],[],[])
+        }, 5000);
+        
+    }else{
+        console.log(i)
+        setTimeout(async() => {
+            await swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
+        },20000)
+        
     }
 }
 
