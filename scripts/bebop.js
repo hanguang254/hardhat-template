@@ -1,11 +1,6 @@
 require('dotenv').config();
 const { ethers} = require('ethers'); 
 const axios = require('axios');
-// const fs = require('fs');
-// const { get } = require('http');
-// const path = require('path');
-// const WETHABI = JSON.parse(fs.readFileSync(path.join(__dirname, 'abi', 'ArbWETH.abi')));
-// const USDTABI = JSON.parse(fs.readFileSync(path.join(__dirname, 'abi', 'ArbUSDT.abi')));
 
 
 //Bebop交易脚本
@@ -14,6 +9,14 @@ const axios = require('axios');
 
 //process.env.polygon_API 节点地址
 const provider = new ethers.providers.JsonRpcProvider(process.env.POLYGON_API);
+const signer = new ethers.Wallet(process.env.ZHU_PRIVATE_KEY, provider);
+const USDT = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
+const USDC ="0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
+const WMATIC = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270";
+const ABI = [
+    "function approve(address spender, uint256 amount) external returns (bool)"
+]
+
 
 function tokeninfo(){
 
@@ -162,6 +165,36 @@ async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
 
 }
 
+
+//授权WMATIC USDT USDC 无线额度
+function approveToken(){
+
+    const BEBOP = '0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c';
+
+    //授权合约USDT
+    const Contract = new ethers.Contract(USDT, ABI, signer);
+    Contract.approve(BEBOP,ethers.constants.MaxUint256,{
+        gasPrice: ethers.utils.parseUnits('400', 'gwei'),
+        gasLimit: 3000000,
+    })
+    .then((res) => {
+        console.log("授权成功",res);
+        return res.wait()
+    }).catch((err) => {
+        console.log("授权失败",err);
+    });
+    // const txres = await tx.wait(); 
+    //授权合约USDC
+    // const Contract2 = new ethers.Contract(USDC, ABI, signer);
+    // const tx2 = Contract2.approve("0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c", ethers.constants.MaxUint256)
+    // // const txres2 = await tx2.wait();
+    // //授权合约WMATIC
+    // const Contract3 = new ethers.Contract(WMATIC, ABI, signer);
+    // const tx3 = Contract3.approve("0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c", ethers.constants.MaxUint256)
+    // // const txres3 = await tx3.wait();
+
+}
+// approveToken();
 
 
 // 请求交易 

@@ -461,4 +461,4 @@ function getAccountState(address){
 	})
 }
 
-getAccountState("0x80909d4FD0EeE126C7F1788DF2745B6a19977E30")
+// getAccountState("0x80909d4FD0EeE126C7F1788DF2745B6a19977E30")
