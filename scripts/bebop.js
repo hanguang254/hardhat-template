@@ -4,8 +4,8 @@ const axios = require('axios');
 
 
 //Bebop交易脚本
-//此脚本使用需自己前往区块链浏览器授权交易代币额度
-
+//此脚本使用需自己前往区块链浏览器授权交易代币额度 
+// bebop='0xbeb09beb09e95e6febf0d6eeb1d0d46d1013cc3c' 合约地址
 
 //process.env.polygon_API 节点地址
 const provider = new ethers.providers.JsonRpcProvider(process.env.POLYGON_API);
@@ -30,7 +30,7 @@ function tokeninfo(){
 // tokeninfo();
 
 //获取报价 
-async function TokenQuote(buyamount,buyToken,sellToken,buy_ratios='',sell_ratios=''){
+async function TokenQuote(buyamount,buyToken,sellToken,sell_ratios=''){
 
     //获取地址
     let account = new ethers.Wallet(process.env.ZHU_PRIVATE_KEY)
@@ -41,7 +41,7 @@ async function TokenQuote(buyamount,buyToken,sellToken,buy_ratios='',sell_ratios
         // sell_amounts:sellamount.toString(),    
         buy_tokens:buyToken.toString(),
         sell_tokens:sellToken.toString(),
-        bull_tokens_ratios:buy_ratios.toString(),   //买入比例总和为1  传入空数组 使用默认值
+        // bull_tokens_ratios:buy_ratios.toString(),   //买入比例总和为1  传入空数组 使用默认值
         sell_tokens_ratios:sell_ratios.toString(),
         taker_address:account.address, //需要修改为自己的地址
         }
@@ -52,7 +52,7 @@ async function TokenQuote(buyamount,buyToken,sellToken,buy_ratios='',sell_ratios
     return data;
 }
 //报价 支持一对一 多对一
-// TokenQuote(100,["USDT"],["WMATIC","USDC"],[],[0.5,0.5]).then((res) => {
+// TokenQuote(100,["USDT"],["WMATIC","USDC"],[0.5,0.5]).then((res) => {
 //     console.log("获取报价",res);
 // })
 
@@ -79,10 +79,10 @@ let signmes ={
 // getsigner([0.5,0.5],["USDT","DAI"],["USDC"],[],[])
 
 //获取签名
-async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
+async function getsigner(amount,buyToken,sellToken,sellratios){
         
         // 获取一对一最新报价
-        await TokenQuote(amount,buyToken,sellToken,butratios,sellratios).then((res) => {
+        await TokenQuote(amount,buyToken,sellToken,sellratios).then((res) => {
             // console.log(res);
             console.log("==================>报价Id",res.quoteId);
             
@@ -165,7 +165,7 @@ async function getsigner(amount,buyToken,sellToken,butratios,sellratios){
 
 }
 
-
+//没有写完  需手动授权
 //授权WMATIC USDT USDC 无线额度
 function approveToken(){
 
@@ -174,7 +174,7 @@ function approveToken(){
     //授权合约USDT
     const Contract = new ethers.Contract(USDT, ABI, signer);
     Contract.approve(BEBOP,ethers.constants.MaxUint256,{
-        gasPrice: ethers.utils.parseUnits('400', 'gwei'),
+        gasPrice: ethers.utils.parseUnits('40', 'gwei'),
         gasLimit: 3000000,
     })
     .then((res) => {
@@ -198,8 +198,8 @@ function approveToken(){
 
 
 // 请求交易 
-async function  swap_Token(amount,buyToken,sellToken,butratios,sellratios){
-        await getsigner(amount,buyToken,sellToken,butratios,sellratios).then((res) => {
+async function  swap_Token(amount,buyToken,sellToken,sellratios){
+        await getsigner(amount,buyToken,sellToken,sellratios).then((res) => {
             // console.log("签名2",res);
             console.log("==================>正在执行交易");
             axios.post("https://api.bebop.xyz/polygon/v1/order",{
@@ -239,13 +239,13 @@ for(let i =0 ;i<=4;i++){
     if (i < 4){
         setTimeout(async() => {
             console.log("==================>正在执行循环")
-            await swap_Token([11,11],["USDT","USDC"],["WMATIC"],[],[])
+            await swap_Token([11,11],["USDT","USDC"],["WMATIC"],[])
         }, 5000);
         
     }else{
         console.log(i)
         setTimeout(async() => {
-            await swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
+            await swap_Token(80,['WMATIC'],['USDT','USDC'],[0.5,0.5])
         },20000)
         
     }
