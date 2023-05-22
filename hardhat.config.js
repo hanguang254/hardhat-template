@@ -18,16 +18,8 @@ module.exports = {
       url: `${process.env.ALCHEMY_API_KEY}`,
       accounts: [process.env.GOERLI_PRIVATE_KEY]
     },
-    moonbean:{
-      url:`${process.env.MOONBRAN_API}`,
-      accounts:[process.env.GOERLI_PRIVATE_KEY]
-    },
     arbitrum:{
       url:`${process.env.ARBitrum_API}`,
-      accounts:[process.env.GOERLI_PRIVATE_KEY]
-    },
-    zksync2:{
-      url:`${process.env.ZKSYNC_API}`,
       accounts:[process.env.GOERLI_PRIVATE_KEY]
     },
     polygon:{

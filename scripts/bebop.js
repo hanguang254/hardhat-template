@@ -51,7 +51,7 @@ async function TokenQuote(buyamount,buyToken,sellToken,sell_ratios=''){
     // console.log(Id);
     return data;
 }
-//报价 支持一对一 多对一
+// 报价 支持一对一 多对一
 // TokenQuote(100,["USDT"],["WMATIC","USDC"],[0.5,0.5]).then((res) => {
 //     console.log("获取报价",res);
 // })
@@ -235,21 +235,21 @@ async function  swap_Token(amount,buyToken,sellToken,sellratios){
 
 // swap_Token(80,['WMATIC'],['USDT','USDC'],[],[0.5,0.5])
 
-for(let i =0 ;i<=4;i++){
-    if (i < 4){
-        setTimeout(async() => {
-            console.log("==================>正在执行循环")
-            await swap_Token([11,11],["USDT","USDC"],["WMATIC"],[])
-        }, 5000);
+// for(let i =0 ;i<=4;i++){
+//     if (i < 4){
+//         setTimeout(async() => {
+//             console.log("==================>正在执行循环")
+//             await swap_Token([11,11],["USDT","USDC"],["WMATIC"],[])
+//         }, 5000);
         
-    }else{
-        console.log(i)
-        setTimeout(async() => {
-            await swap_Token(80,['WMATIC'],['USDT','USDC'],[0.5,0.5])
-        },20000)
+//     }else{
+//         console.log(i)
+//         setTimeout(async() => {
+//             await swap_Token(80,['WMATIC'],['USDT','USDC'],[0.5,0.5])
+//         },20000)
         
-    }
-}
+//     }
+// }
 
 
     
