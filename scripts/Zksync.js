@@ -3,24 +3,21 @@ require('dotenv').config();
 const fs = require('fs');
 
 
+
 const provider =new ethers.providers.JsonRpcProvider('https://zksync2-mainnet.zksync.io');
 
 const ABI = [
   {
     "inputs": [],
     "name": "_mint",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }
 ];
-const contractAddress = "0x4b5e7E51CBeb32505983B69D96a401F31d8F0039";
+const contractAddress = "0x92FcBEEddF2625333506837676b20bD5f99Ce9DB";
+// 0x92FcBEEddF2625333506837676b20bD5f99Ce9DB
+// 0x4b5e7E51CBeb32505983B69D96a401F31d8F0039
 
 //测试读取私钥  
 function readKeys() {
@@ -87,5 +84,7 @@ async function main(){
     
 }
 main();
+
+
 
 
