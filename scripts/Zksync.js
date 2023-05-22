@@ -1,15 +1,24 @@
-
 const {ethers, utils } = require('ethers'); 
-// const { Wallet, Provider} = require('zksync-web3');
 require('dotenv').config();
+const fs = require('fs');
+
 
 const provider =new ethers.providers.JsonRpcProvider('https://zksync2-mainnet.zksync.io');
-// const provider = new Provider('https://zksync2-mainnet.zksync.io');
 
-//测试批量私钥   要换成读取文件的方式
-const KeyList = [process.env.PROVIDER_KEY,process.env.PROVIDER_KEY2];
-// console.log("KeyList:",KeyList);
 
+//测试读取私钥  
+function readKeys() {
+  return new Promise((resolve, reject) => {
+    fs.readFile('./script/key.txt', 'utf8', (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        const array = data.split('\n').map((line) => line.trim()); // 去除每行数据的空格和换行符
+        resolve(array);
+      }
+    });
+  });
+}
 
 
 async function getWallet(key){
@@ -28,6 +37,8 @@ async function transfer(Wallet){
     const receipt = await tx.wait();
     if (receipt.status == 1) {
           console.log("转账交易成功");
+          console.log("余额",ethers.utils.formatEther(await provider.getBalance(Wallet.address)))
+          console.log("交易次数：",await provider.getTransactionCount(Wallet.address));
     }
   }catch(err){
     console.log("转账交易失败：",err);
@@ -36,6 +47,7 @@ async function transfer(Wallet){
 }
 
 async function main(){
+  const KeyList = await readKeys();
   for (let i = 0; i < KeyList.length; i++) {
     const wallet = await getWallet(KeyList[i]);
     await transfer(wallet);
@@ -43,31 +55,5 @@ async function main(){
     
 }
 main();
-
-
-// async function transfer() {
-//   const tx = await wallet.transfer({
-//     to: wallet.address,
-//     token: '0x0000000000000000000000000000000000000000',
-//     amount: utils.parseEther('0'),
-//   });
-//   console.log("交易hash：", tx.hash);
-
-//   const receipt = await tx.wait();
-//   if (receipt.status == 1) {
-//     console.log("交易成功");
-//     console.log("交易gas：",utils.formatEther(receipt.gasUsed.toNumber()));
-//   }
-// }
-
-// async function doTransactions() {
-//   for (let i = 0; i < 2; i++) {
-//     await transfer();
-//   }
-//   console.log("余额",utils.formatEther(await provider.getBalance(wallet.address)))
-//   console.log("交易次数：",await provider.getTransactionCount(wallet.address));
-// }
-
-// doTransactions();
 
 
