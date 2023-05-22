@@ -5,6 +5,22 @@ const fs = require('fs');
 
 const provider =new ethers.providers.JsonRpcProvider('https://zksync2-mainnet.zksync.io');
 
+const ABI = [
+  {
+    "inputs": [],
+    "name": "_mint",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
+const contractAddress = "0x4b5e7E51CBeb32505983B69D96a401F31d8F0039";
 
 //测试读取私钥  
 function readKeys() {
@@ -20,6 +36,11 @@ function readKeys() {
   });
 }
 
+async function getContract(Wallet){
+  const contract = new ethers.Contract(contractAddress,ABI,Wallet);
+  return contract;
+}
+
 
 async function getWallet(key){
   const wallet = new ethers.Wallet(key,provider);
@@ -29,29 +50,40 @@ async function getWallet(key){
 
 async function transfer(Wallet){
   try{
-    const tx = await Wallet.sendTransaction({
-    to: Wallet.address,
-    value: utils.parseEther('0'),
-    })
+      const tx = await Wallet.sendTransaction({
+      to: Wallet.address,
+      value: utils.parseEther('0'),
+      })
 
-    const receipt = await tx.wait();
-    if (receipt.status == 1) {
-          console.log("转账交易成功");
-          console.log("余额",ethers.utils.formatEther(await provider.getBalance(Wallet.address)))
-          console.log("交易次数：",await provider.getTransactionCount(Wallet.address));
-    }
+      const receipt = await tx.wait();
+      if (receipt.status == 1) {
+            console.log("转账交易成功");
+            console.log("余额",ethers.utils.formatEther(await provider.getBalance(Wallet.address)))
+            console.log("交易次数：",await provider.getTransactionCount(Wallet.address));
+      }
   }catch(err){
-    console.log("转账交易失败：",err);
+      console.log("转账交易失败：",err);
   }
   
 }
 
 async function main(){
-  const KeyList = await readKeys();
-  for (let i = 0; i < KeyList.length; i++) {
-    const wallet = await getWallet(KeyList[i]);
-    await transfer(wallet);
+  try{
+    const KeyList = await readKeys();
+    for (let i = 0; i < KeyList.length; i++) {
+      const wallet = await getWallet(KeyList[i]);
+      const contract = await getContract(wallet);
+      const tx = await contract._mint();
+      const receipt = await tx.wait();
+      if (receipt.status == 1) {
+        console.log("合约调用成功");
+      }
+      await transfer(wallet);
+    }
+  }catch(err){
+    console.log("main函数出错：",err);
   }
+  
     
 }
 main();
