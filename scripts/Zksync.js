@@ -19,6 +19,90 @@ const contractAddress = "0x92FcBEEddF2625333506837676b20bD5f99Ce9DB";
 // 0x92FcBEEddF2625333506837676b20bD5f99Ce9DB
 // 0x4b5e7E51CBeb32505983B69D96a401F31d8F0039
 
+// 0x687b41aa31F0369Bd5d3d680d6b36ff420Ffe654
+// abi= [
+//   {
+//     "inputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "constructor"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "",
+//         "type": "address"
+//       },
+//       {
+//         "internalType": "uint256",
+//         "name": "",
+//         "type": "uint256"
+//       }
+//     ],
+//     "name": "contracts",
+//     "outputs": [
+//       {
+//         "internalType": "address",
+//         "name": "",
+//         "type": "address"
+//       }
+//     ],
+//     "stateMutability": "view",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "uint256",
+//         "name": "numContracts",
+//         "type": "uint256"
+//       }
+//     ],
+//     "name": "createZksync",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "_addr",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "getContract",
+//     "outputs": [
+//       {
+//         "internalType": "address[]",
+//         "name": "sub",
+//         "type": "address[]"
+//       }
+//     ],
+//     "stateMutability": "view",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "_addr",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "getCount",
+//     "outputs": [
+//       {
+//         "internalType": "uint256",
+//         "name": "",
+//         "type": "uint256"
+//       }
+//     ],
+//     "stateMutability": "view",
+//     "type": "function"
+//   }
+// ]
+
 //批量读取私钥  
 function readKeys() {
   return new Promise((resolve, reject) => {
@@ -72,7 +156,8 @@ async function main(){
     for (let i = 0; i < KeyList.length; i++) {
       const wallet = await getWallet(KeyList[i]);
       const contract = await getContract(wallet);
-      const tx = await contract._mint();
+      const gas = {gasLimit: 3000000,gasPrice: ethers.utils.parseUnits('0.2', 'gwei')}
+      const tx = await contract._mint(gas);
       const receipt = await tx.wait();
       if (receipt.status == 1) {
         console.log("合约调用成功");
@@ -90,7 +175,7 @@ async function main(){
 
 async function Domain(){
 
-  for(let i = 0;i<10;i++){
+  for(let i = 0;i<5;i++){
     await main();
   }
 }
