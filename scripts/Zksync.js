@@ -19,7 +19,7 @@ const contractAddress = "0x92FcBEEddF2625333506837676b20bD5f99Ce9DB";
 // 0x92FcBEEddF2625333506837676b20bD5f99Ce9DB
 // 0x4b5e7E51CBeb32505983B69D96a401F31d8F0039
 
-//测试读取私钥  
+//批量读取私钥  
 function readKeys() {
   return new Promise((resolve, reject) => {
     fs.readFile('./script/key.txt', 'utf8', (error, data) => {
@@ -41,7 +41,9 @@ async function getContract(Wallet){
 
 async function getWallet(key){
   const wallet = new ethers.Wallet(key,provider);
-  console.log("钱包地址：",wallet.address);
+  const address = wallet.address;
+  const shortenedAddress = `${address.slice(0, 4)}...${address.slice(-4)}`;
+  console.log("钱包地址：",shortenedAddress);
   return wallet;
 }
 
@@ -83,8 +85,14 @@ async function main(){
   
     
 }
-main();
+// main();
 
 
+async function Domain(){
 
+  for(let i = 0;i<10;i++){
+    await main();
+  }
+}
+Domain();
 
