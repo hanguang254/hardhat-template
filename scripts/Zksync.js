@@ -134,8 +134,10 @@ async function getWallet(key){
 async function transfer(Wallet){
   try{
       const tx = await Wallet.sendTransaction({
-      to: Wallet.address,
-      value: utils.parseEther('0'),
+        to: Wallet.address,
+        value: utils.parseEther('0'),
+        gasLimit: 1500000,
+        gasPrice: ethers.utils.parseUnits('0.25', 'gwei')
       })
 
       const receipt = await tx.wait();
@@ -156,7 +158,7 @@ async function main(){
     for (let i = 0; i < KeyList.length; i++) {
       const wallet = await getWallet(KeyList[i]);
       const contract = await getContract(wallet);
-      const gas = {gasLimit: 3000000,gasPrice: ethers.utils.parseUnits('0.2', 'gwei')}
+      const gas = {gasLimit: 1500000,gasPrice: ethers.utils.parseUnits('0.25', 'gwei')}
       const tx = await contract._mint(gas);
       const receipt = await tx.wait();
       if (receipt.status == 1) {
@@ -175,7 +177,7 @@ async function main(){
 
 async function Domain(){
 
-  for(let i = 0;i<5;i++){
+  for(let i = 0;i<2;i++){
     await main();
   }
 }
