@@ -106,7 +106,7 @@ const contractAddress = "0x92FcBEEddF2625333506837676b20bD5f99Ce9DB";
 //批量读取私钥  
 function readKeys() {
   return new Promise((resolve, reject) => {
-    fs.readFile('./script/key.txt', 'utf8', (error, data) => {
+    fs.readFile('./key/key.txt', 'utf8', (error, data) => {
       if (error) {
         reject(error);
       } else {
@@ -172,7 +172,7 @@ async function main(){
   
     
 }
-// main();
+main();
 
 
 async function Domain(){
@@ -181,5 +181,5 @@ async function Domain(){
     await main();
   }
 }
-Domain();
+// Domain();
 
