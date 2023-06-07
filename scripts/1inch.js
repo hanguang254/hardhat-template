@@ -3,6 +3,8 @@ const Web3 = require('web3');
 const  axios  = require('axios');
 const fs = require('fs');
 
+//此脚本留了运行逻辑漏洞需要
+//请加关注推特：wbgz888
 
 // 获取 .env 文件的绝对路径
 const path = require('path');
