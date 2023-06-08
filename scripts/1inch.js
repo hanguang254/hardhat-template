@@ -3,8 +3,6 @@ const Web3 = require('web3');
 const  axios  = require('axios');
 const fs = require('fs');
 
-//此脚本留了运行逻辑漏洞需要
-//请加关注推特：wbgz888
 
 // 获取 .env 文件的绝对路径
 const path = require('path');
@@ -13,6 +11,7 @@ const envPath = path.resolve(__dirname, '../.env');
 // 配置 dotenv
 dotenv.config({ path: envPath });
 
+const USDCABI = JSON.parse(fs.readFileSync(path.join(__dirname, 'abi', 'USDC.abi')));
 
 const web3 =new Web3('https://zksync2-mainnet.zksync.io');
 
@@ -43,91 +42,103 @@ async function getWallet(key){
 
 
 async function ApproveTradeWithRouter(){
-    const url = "https://api.1inch.io/v5.0/324/approve/transaction";
-    const params = {
-        tokenAddress:USDC,
-        amount:ethers.utils.parseUnits("100", 6),
-    }
-    const res =await axios.get(url,{params})
-    // console.log(res.data)
-    return res.data;
+    try{
+        const url = "https://api.1inch.io/v5.0/324/approve/transaction";
+        const params = {
+            tokenAddress:USDC,
+            amount:ethers.utils.parseUnits("100", 6),
+        }
+        const res =await axios.get(url,{params})
+        // console.log(res.data)
+        return res.data;
+    }catch(e){
+        console.log(e)
+    }    
 }
 
 async function allowance(wallet){
-    const url = "https://api.1inch.io/v5.0/324/approve/allowance";
-    const params = {
-        tokenAddress:USDC,
-        walletAddress:wallet.address,
-    }
-    const res =await axios.get(url,{params})
-    // console.log(res.data.allowance)
-    return res.data.allowance;
+    try{
+        const url = "https://api.1inch.io/v5.0/324/approve/allowance";
+
+        const params = {
+            tokenAddress:USDC,
+            walletAddress:wallet.address,
+        }
+        const res =await axios.get(url,{params})
+        // console.log(res.data.allowance)
+        return res.data.allowance;
+
+    }catch(e){
+        console.log(e)
+    }    
 }
-// allowance()
+async function test(){
+    const key = ""
+    const wallet = await getWallet(key)
+    const a = await allowance(wallet)
+    // const a = await swapTokensforTokens(USDC,ETH,ethers.utils.parseUnits("100", 6),wallet)
+    console.log(a)
+}
+test()
+
+
 
 //余额查询
 async function balanceOf(wallet){
-    const url = "https://zksync2-mainnet-explorer.zksync.io/address/"+wallet.address;
-    const res =await axios.get(url)
-    const balances = res.data.info.balances;
-    const value = Object.entries(balances)
-    let USDCbalance = 0;    
-    // console.log(value)
-    for(let i=0;i<value.length;i++){
-        if(value[i][0] == "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4"){
-            const c =  value[i][1];
-            const balance = c["balance"];
-            // console.log(parseInt(balance,16))
-            return parseInt(balance,16);
-        } else if(value[i][0] == "0x0000000000000000000000000000000000000000"){
-            const c =  value[i][1];
-            const balance = c["balance"];
-            // console.log("ETH:",parseInt(balance,16))
-        }else{
-            console.log("没有该币种")
-        }    
-    }
+    const USDCContract = new web3.eth.Contract(USDCABI,USDC);
+    const USDCbalance = await USDCContract.methods.balanceOf(wallet.address).call();
     return USDCbalance; 
 }
-// balanceOf()
+
+
 
 async function swapTokensforTokens(tokenIn,tokenOut,amountIn,wallet){
-    const url = "https://api.1inch.io/v5.0/324/swap";
-    const params = {
-        fromTokenAddress:tokenIn,
-        toTokenAddress:tokenOut,
-        amount:amountIn,
-        fromAddress:wallet.address,
-        slippage:0.1,
-    }
-    // console.log(params)
-    const res =await axios.get(url,{params})
-    // console.log(res.data.tx)
-    return res.data.tx;
+    try{
+        const url = "https://api.1inch.io/v5.0/324/swap";
+
+        const params = {
+            fromTokenAddress:tokenIn,
+            toTokenAddress:tokenOut,
+            amount:amountIn,
+            fromAddress:wallet.address,
+            slippage:0.1,
+        }
+        // console.log(params)
+        const res =await axios.get(url,{params,headers})
+        // console.log(res.data.tx)
+        return res.data.tx;
+    }catch(e){
+        console.log(e)
+    }    
 }
 // swapTokensforTokens();
 
 //广播交易
 async function broadcastTransaction(rawTransaction){
-    //广播交易 rawTransaction签名data
-    const broadcastApiUrl = 'https://tx-gateway.1inch.io/v1.1/324/broadcast';
-    const data = {
-        rawTransaction:rawTransaction,
-    }
-    // console.log(data)
-    const broadcastRes = await axios.post(broadcastApiUrl,data);
-    const tx = broadcastRes.data;
-    console.log("tx hash：",tx.transactionHash)
+    try{
+        //广播交易 rawTransaction签名data
+        const broadcastApiUrl = 'https://tx-gateway.1inch.io/v1.1/324/broadcast';
+        const data = {
+            rawTransaction:rawTransaction,
+        }
+        // console.log(data)
+        const broadcastRes = await axios.post(broadcastApiUrl,data);
+        const tx = broadcastRes.data;
+        console.log("tx hash：",tx.transactionHash)
+        return tx.transactionHash;
+    }catch(e){
+        console.log(e)
+    }    
 }
 
 
 
 // ApproveTradeWithRouter()
-async function ApprovebuildTransaction(wallet,key){
+async function ApprovebuildTransaction(key){
     const signTransaction = await ApproveTradeWithRouter();
     // console.log(signTransaction)
-    const gasLimit = await web3.eth.estimateGas({...signTransaction,from:wallet.address})
-    const sendtx = {...signTransaction,gasLimit}
+    // const gasLimit = await web3.eth.estimateGas({...signTransaction,from:wallet.address})
+    const sendtx = {...signTransaction,gasLimit:1000000}
     // console.log(sendtx)
     const{ rawTransaction } = await web3.eth.accounts.signTransaction(sendtx,key);
     // console.log(rawTransaction)
@@ -144,37 +155,67 @@ async function swapbuildTransaction(tokenIn,tokenOut,amountIn,key,wallet){
 }
 
 
+async function getTransactionReceipt(hash){
+    let receipt = 0;
+    await web3.eth.getTransactionReceipt(hash, function(error, result) {
+        
+        if(error) {
+            console.error(error);
+        } else {
+            receipt = 1;
+        }
+        
+    });
+    return receipt;
+}
+
+
+
+
 
 async function main(){
-    const KeyList = await readKeys();
-    for(let i = 0;i<KeyList.length;i++){
-        const wallet = await getWallet(KeyList[i]);
-        const allowanceValue = await allowance(wallet);
-        const balance = await balanceOf(wallet);
-        
-        console.log("wallet address:",wallet.address)
-        console.log("USDC balance:",balance)
-        console.log("allowanceValue:",allowanceValue.toString())
+    try{
+        const KeyList = await readKeys();
+        for(let i = 0;i<KeyList.length;i++){
+            const wallet = await getWallet(KeyList[i]);
+            const allowanceValue = await allowance(wallet);
+            const balance = await balanceOf(wallet);
+            
+            console.log("wallet address:",wallet.address)
+            console.log("allowanceValue:",allowanceValue.toString())
+            console.log("USDT balance:",balance)
+            
+            //需要申请企业API权限
 
-        if (allowanceValue <= ethers.utils.parseUnits("100", 6)) {
-            const rawTransaction = await ApprovebuildTransaction(wallet,KeyList[i]);
-            await broadcastTransaction(rawTransaction);
-            console.log("USDC approve success")
+            // //USDC for ETH
+            if(balance > 0){
+                if (allowanceValue <= ethers.utils.parseUnits("100", 6)) {
+                    const rawTransaction = await ApprovebuildTransaction(KeyList[i]);
+                    const hash = await broadcastTransaction(rawTransaction);
+                    const res = await getTransactionReceipt(hash)
+                    console.log(res === 1 ?"approve success":"approve fail");
+                }
+                async function swap(){
+                    const rawTransaction = await swapbuildTransaction(USDC,ETH,balance,KeyList[i],wallet);
+                    const hash = await broadcastTransaction(rawTransaction);
+                    const res =  await getTransactionReceipt(hash);
+                    console.log(res === 1 ? "USDC for ETH swap success":"USDC for ETH swap fail")
+                } 
+                await swap();
+            }else if(balance == 0){
+                // ETH for USDC
+                const amountIn  = ethers.utils.parseUnits("0.0005", 18);
+                const rawTransaction = await swapbuildTransaction(ETH,USDC,amountIn,KeyList[i],wallet);
+                const hash = await broadcastTransaction(rawTransaction);
+                const res =  await getTransactionReceipt(hash);
+                console.log(res === 1 ? "ETH for USDC swap success":"ETH for USDC swap fail")
+            }
+            
         }
-        //ETH for USDC
-        const amountIn  = ethers.utils.parseUnits("0.0005", 18);
-        const rawTransaction = await swapbuildTransaction(ETH,USDC,amountIn,KeyList[i],wallet);
-        await broadcastTransaction(rawTransaction);
-        console.log("ETH for USDC swap success")
-        
-        //USDC for ETH
-        const newbalance = await balanceOf(wallet);
-        console.log("newbalance:",newbalance)
-        if(newbalance >= 0){
-            const rawTransaction = await swapbuildTransaction(USDC,ETH,newbalance,KeyList[i],wallet);
-            await broadcastTransaction(rawTransaction);
-            console.log("USDC for ETH swap success")
-        }
+    }catch(error){
+        console.log(error)
     }
-}    
-main()
+        
+}
+    
+// main()
