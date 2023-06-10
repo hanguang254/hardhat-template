@@ -1,5 +1,5 @@
 const { ethers } = require('ethers'); 
-const Web3 = require('web3'); 
+const { Web3 }= require('web3');
 const  axios  = require('axios');
 const fs = require('fs');
 
@@ -13,7 +13,7 @@ dotenv.config({ path: envPath });
 
 const USDCABI = JSON.parse(fs.readFileSync(path.join(__dirname, 'abi', 'USDC.abi')));
 
-const web3 =new Web3('https://zksync2-mainnet.zksync.io');
+const web3 = new Web3('https://zksync2-mainnet.zksync.io');
 
 
 const ETH = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
@@ -64,7 +64,10 @@ async function allowance(wallet){
             tokenAddress:USDC,
             walletAddress:wallet.address,
         }
-        const res =await axios.get(url,{params})
+        const headers ={ 
+            'Cookie': '__cf_bm=OhilZ4L_3C7JMkGewXTba3j9gNE6_ABUkq87TBsq_Ns-1686371831-0-AUBgV+za5XWyabMM2ZIZ9ShfInjbPUBEF7h2vJtjvmKrIs665dECJ3+t8MkCZBmQmFjOrTDs3AeSLww1cew62bo='
+          }
+        const res =await axios.get(url,{params,headers})
         // console.log(res.data.allowance)
         return res.data.allowance;
 

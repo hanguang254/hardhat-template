@@ -28,7 +28,7 @@ const WETH = "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91";
 //批量读取私钥
 function readKeys() {
     return new Promise((resolve, reject) => {
-      fs.readFile('private-key.txt', 'utf8', (error, data) => {
+      fs.readFile('./scripts/zksync/private-key.txt', 'utf8', (error, data) => {
         if (error) {
           reject(error);
         } else {
@@ -88,7 +88,7 @@ async function swapExactETHForUSDC(Contract,Wallet){
             gasLimit: 2500000,
             gasPrice: ethers.utils.parseUnits("0.25", "gwei"),
             // ethers.utils.parseUnits("0.0005",18) 兑换的金额
-            value: ethers.utils.parseUnits("0.0005",18)
+            value: ethers.utils.parseUnits("0.001",18)
         };
         
         const tx = await Contract.swapExactETHForTokensSupportingFeeOnTransferTokens(

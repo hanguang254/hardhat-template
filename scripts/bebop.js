@@ -27,7 +27,7 @@ function tokeninfo(){
         console.error(err);
     })
 }
-// tokeninfo();
+tokeninfo();
 
 //获取报价 
 async function TokenQuote(buyamount,buyToken,sellToken,sell_ratios=''){
