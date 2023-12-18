@@ -14,25 +14,8 @@ require('dotenv').config();
 module.exports = {
   solidity: "0.8.17",
   networks: {
-    goerli: {
-      url: `${process.env.ALCHEMY_API_KEY}`,
-      accounts: [process.env.GOERLI_PRIVATE_KEY]
+    local: {
+      url: "http://127.0.0.1:8545", // 这里填写本地节点的 URL
     },
-    arbitrum:{
-      url:`${process.env.ARBitrum_API}`,
-      accounts:[process.env.GOERLI_PRIVATE_KEY]
-    },
-    polygon:{
-      url:`${process.env.POLYGON_API}`,
-      accounts:[process.env.ZHU_PRIVATE_KEY]
-    },
-    polygonTest:{
-      url:`${process.env.MUMBAI}`,
-      accounts:[process.env.GOERLI_PRIVATE_KEY]
-    },
-    zksync:{
-      url:`${process.env.ZKSYNC_API}`,
-      accounts:[process.env.ZHU_PRIVATE_KEY]
-    }
   },
 };

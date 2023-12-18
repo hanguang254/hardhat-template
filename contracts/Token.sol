@@ -1,66 +1,96 @@
-//SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.10;
 
-// Solidity files have to start with this pragma.
-// It will be used by the Solidity compiler to validate its version.
-pragma solidity ^0.8.9;
+// import "forge-std/Test.sol";
 
 
-// This is the main building block for smart contracts.
-contract Token {
-    // Some string type variables to identify the token.
-    string public name = "My Hardhat Token";
-    string public symbol = "MHT";
+interface IERC20 {
+  event Approval(address indexed owner, address indexed spender, uint256 value);
+  event Transfer(address indexed from, address indexed to, uint256 value);
 
-    // The fixed amount of tokens, stored in an unsigned integer type variable.
-    uint256 public totalSupply = 1000000;
+  function name() external view returns (string memory);
 
-    // An address type variable is used to store ethereum accounts.
-    address public owner;
+  function symbol() external view returns (string memory);
 
-    // A mapping is a key/value map. Here we store each account's balance.
-    mapping(address => uint256) balances;
+  function decimals() external view returns (uint8);
 
-    // The Transfer event helps off-chain applications understand
-    // what happens within your contract.
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+  function totalSupply() external view returns (uint256);
 
-    /**
-     * Contract initialization.
-     */
-    constructor() {
-        // The totalSupply is assigned to the transaction sender, which is the
-        // account that is deploying the contract.
-        balances[msg.sender] = totalSupply;
-        owner = msg.sender;
+  function balanceOf(address owner) external view returns (uint256);
+
+  function allowance(address owner, address spender)
+  external
+  view
+  returns (uint256);
+
+  function approve(address spender, uint256 value) external returns (bool);
+
+  function transfer(address to, uint256 value) external returns (bool);
+
+  function transferFrom(
+    address from,
+    address to,
+    uint256 value
+  ) external returns (bool);
+  function withdraw(uint256 wad) external;
+  function deposit(uint256 wad) external returns (bool);
+  function owner() external view virtual returns (address);
+}
+
+interface IDPPOracle {
+    function flashLoan(
+        uint256 baseAmount,
+        uint256 quoteAmount,
+        address _assetTo,
+        bytes calldata data
+    ) external;
+}
+
+interface CheatCodes {
+  // Creates _and_ also selects a new fork with the given endpoint and block and returns the identifier of the fork
+  function createSelectFork(string calldata,uint256) external returns(uint256);
+  // Creates _and_ also selects a new fork with the given endpoint and the latest block and returns the identifier of the fork
+  function createSelectFork(string calldata) external returns(uint256);
+  // Takes a fork identifier created by `createFork` and sets the corresponding forked state as active.
+
+}
+
+
+contract ContractTest  {
+    IDPPOracle DPPOracle =
+        IDPPOracle(0xFeAFe253802b77456B4627F8c2306a9CeBb5d681);
+
+    IERC20 BUSD = IERC20(0x55d398326f99059fF775485246999027B3197955);
+
+    CheatCodes cheats = CheatCodes(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+
+    function setUp() public {
+        cheats.createSelectFork("bsc", 29010220);
     }
 
-    /**
-     * A function to transfer tokens.
-     *
-     * The `external` modifier makes a function *only* callable from *outside*
-     * the contract.
-     */
-    function transfer(address to, uint256 amount) external {
-        // Check if the transaction sender has enough tokens.
-        // If `require`'s first argument evaluates to `false` then the
-        // transaction will revert.
-        require(balances[msg.sender] >= amount, "Not enough tokens");
+    function testExploit() public {
+        
+        // emit log_named_decimal_uint(
+        //     "BUSD balance before flashloan",
+        //     BUSD.balanceOf(address(this)),
+        //     BUSD.decimals()
+        // );
 
-        // Transfer the amount.
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
+        DPPOracle.flashLoan(0, 30_000 * 1e18, address(this), new bytes(1));
 
-        // Notify off-chain applications of the transfer.
-        emit Transfer(msg.sender, to, amount);
     }
 
-    /**
-     * Read only function to retrieve the token balance of a given account.
-     *
-     * The `view` modifier indicates that it doesn't modify the contract's
-     * state, which allows us to call it without executing a transaction.
-     */
-    function balanceOf(address account) external view returns (uint256) {
-        return balances[account];
+    function DPPFlashLoanCall(
+        address sender,
+        uint256 baseAmount,
+        uint256 quoteAmount,
+        bytes calldata data
+    ) external {
+        // emit log_named_decimal_uint(
+        //     "BUSD balance after flashloan",
+        //     BUSD.balanceOf(address(this)),
+        //     BUSD.decimals()
+        // );
+        BUSD.transfer(address(DPPOracle), 30_000 * 1e18);
     }
 }
