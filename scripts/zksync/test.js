@@ -8,7 +8,7 @@ const envPath = path.resolve(__dirname, '../../.env');
 dotenv.config({ path: envPath });
 
 
-const web3 = new Web3('https://bsc-dataseed1.ninicoin.io')
+const web3 = new Web3('https://bsc.blockpi.network/v1/rpc/96f22b245385c1bd2926286ea66b1b7421adf503')
 
 
 const  key =`0x${process.env.ZHU_PRIVATE_KEY}`
@@ -33,7 +33,7 @@ async function getRowList(){
             gas: gasLimit,
             gasPrice: gasPrice,
             nonce:BigInt(Number(nonce.toString())+i),
-            data:"0x646174613a2c7b2270223a226273632d3230222c226f70223a226d696e74222c227469636b223a2262736369222c22616d74223a2231303030227d"
+            data:"0x646174613a2c7b2270223a226273632d3230222c226f70223a226d696e74222c227469636b223a22736f6669222c22616d74223a2234227d"
         };
         const {rawTransaction}=await wallet.signTransaction(transaction)
         list.push(rawTransaction)
@@ -53,7 +53,7 @@ async function run() {
             transactions.forEach((res,index)=>{
                 console.log(res,index)
             })
-            new Promise((resolve, reject) => {setTimeout(() => {}, 5000)})
+            new Promise((resolve, reject) => {setTimeout(() => {}, 2000)})
         }
     } catch (err) {
         console.log(err);
