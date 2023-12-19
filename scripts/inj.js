@@ -43,7 +43,7 @@ async function INJMint(accountDetails)  {
         const msg = MsgSend.fromJSON({
             amount,
             srcInjectiveAddress: injectiveAddress,  // 转出地址
-            dstInjectiveAddress: "inj15jy9vzmyy63ql9y6dvned2kdat2994x5f4ldu4",  //接受地址
+            dstInjectiveAddress: injectiveAddress,  //接受地址
         })
         
 
