@@ -33,7 +33,7 @@ console.log("MINT地址",injectiveAddress);
 /** MsgSend Example */
 async function INJMint(accountDetails)  {
 
-
+ try{
         /** Prepare the Message */
         const amount = {
             amount: new BigNumberInBase(0.03).toWei().toFixed(),
@@ -43,7 +43,8 @@ async function INJMint(accountDetails)  {
         const msg = MsgSend.fromJSON({
             amount,
             srcInjectiveAddress: injectiveAddress,  // 转出地址
-            dstInjectiveAddress: injectiveAddress,  //接受地址
+            // "inj15jy9vzmyy63ql9y6dvned2kdat2994x5f4ldu4"
+            dstInjectiveAddress: "inj15jy9vzmyy63ql9y6dvned2kdat2994x5f4ldu4",  //接受地址
         })
         
 
@@ -89,21 +90,30 @@ async function INJMint(accountDetails)  {
             `交易哈希 hash: ${JSON.stringify(txResponse.txHash)}`,
             )
         }
+    }catch(err){
+        console.error("Error in INJMint:", err.message);
+        throw err;
+    }
 }
 
 async function main(){
     try{
         let currentSequence = 0;
-        for(let i=0;i<=100;i++){
-            console.log("-----------------------分界线-----------------------");
-            const accountDetails = await new ChainRestAuthApi("https://lcd-injective.keplr.app").fetchAccount(
-                injectiveAddress,
-            )
-            // console.log(accountDetails);
-            await INJMint(accountDetails);
-            await new Promise((resolve) => {setTimeout(() => {resolve()}, 2000)})
-            currentSequence++;
-            console.log("mint次数：",currentSequence);
+        while(currentSequence<100){
+            try{
+                console.log("-----------------------分界线-----------------------");
+                const accountDetails = await new ChainRestAuthApi("https://lcd-injective.keplr.app").fetchAccount(
+                    injectiveAddress,
+                )
+                // console.log(accountDetails);
+                await INJMint(accountDetails);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                currentSequence++;
+                console.log("mint次数：",currentSequence);
+            }catch(err){
+                console.log(err.message);
+                throw err
+            }
         }
 
     }catch(err){
