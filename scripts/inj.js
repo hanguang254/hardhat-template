@@ -44,7 +44,7 @@ async function INJMint(accountDetails)  {
             amount,
             srcInjectiveAddress: injectiveAddress,  // 转出地址
             // "inj15jy9vzmyy63ql9y6dvned2kdat2994x5f4ldu4"
-            dstInjectiveAddress: "inj15jy9vzmyy63ql9y6dvned2kdat2994x5f4ldu4",  //接受地址
+            dstInjectiveAddress: injectiveAddress,  //接受地址
         })
         
 
@@ -70,7 +70,7 @@ async function INJMint(accountDetails)  {
         /** Calculate hash of the transaction */
         console.log(`Transaction Hash: ${TxClient.hash(txRaw)}`)
 
-        const txService = new TxRestApi("https://lcd-injective.keplr.app")
+        const txService = new TxRestApi("https://inj.nownodes.io/3deaa28b-c43e-4380-95b1-35748a79f8ce")
 
         /** Simulate transaction */
         const simulationResponse = await txService.simulate(txRaw)
@@ -102,7 +102,7 @@ async function main(){
         while(currentSequence<100){
             try{
                 console.log("-----------------------分界线-----------------------");
-                const accountDetails = await new ChainRestAuthApi("https://lcd-injective.keplr.app").fetchAccount(
+                const accountDetails = await new ChainRestAuthApi("https://inj.nownodes.io/3deaa28b-c43e-4380-95b1-35748a79f8ce").fetchAccount(
                     injectiveAddress,
                 )
                 // console.log(accountDetails);
