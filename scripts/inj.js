@@ -36,7 +36,7 @@ async function INJMint(accountDetails)  {
  try{
         /** Prepare the Message */
         const amount = {
-            amount: new BigNumberInBase(0.03).toWei().toFixed(),
+            amount: new BigNumberInBase(0.001).toWei().toFixed(),
             denom: 'inj',
         }
 
@@ -51,7 +51,7 @@ async function INJMint(accountDetails)  {
         /** Prepare the Transaction **/
         const { signBytes, txRaw } = createTransaction({
             message: msg,
-            memo: 'ZGF0YToseyJwIjoiaW5qcmMtMjAiLCJvcCI6Im1pbnQiLCJ0aWNrIjoiSU5KUyIsImFtdCI6IjIwMDAifQ==',
+            memo: 'ZGF0YToseyJwIjoiaW5qcmMtMjAiLCJvcCI6Im1pbnQiLCJ0aWNrIjoiSU5KUyIsImFtdCI6IjEwMDAifQ==',
             fee: DEFAULT_STD_FEE,
             pubKey: publicKey,
             sequence: parseInt(accountDetails.account.base_account.sequence, 10),
@@ -107,7 +107,7 @@ async function main(){
                 )
                 // console.log(accountDetails);
                 await INJMint(accountDetails);
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 currentSequence++;
                 console.log("mint次数：",currentSequence);
             }catch(err){
