@@ -10,7 +10,7 @@ const envPath = path.join(__dirname, '../.env');
 dotenv.config({ path: envPath });
 
 
-const web3 = new Web3('https://mainnet.chainx.org/rpc');
+const web3 = new Web3('https://rpc-1.bevm.io/');
 
 
 const key = `0x${process.env.ZHU_KEY}`
@@ -21,7 +21,7 @@ async function getRowList(){
 
     
     const gasLimit = 22000;  
-    const gasPrice = web3.utils.toWei('2', 'gwei');
+    const gasPrice = web3.utils.toWei('1.5', 'gwei');
     const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
     console.log(nonce);
 
@@ -34,7 +34,7 @@ async function getRowList(){
         gas: gasLimit,
         gasPrice: gasPrice,
         nonce: BigInt(Number(nonce.toString())+i),
-        data:"0x646174613a2c7b2270223a226173632d3230222c226f70223a226d696e74222c227469636b223a2264696e6f222c22616d74223a22313030303030303030227d"
+        data:""
         };
         // console.log(transaction);
         const {rawTransaction}=await wallet.signTransaction(transaction);
