@@ -44,8 +44,14 @@ async function run(){
         while(count<runCount){
             const rawTransaction =await bevmMint();
             const receipt = await web3.eth.sendSignedTransaction(rawTransaction);
+            // console.log(receipt);
             count++
-            console.log(`[第${count}次MINT]  交易hash:${receipt.blockHash}`);
+            if(receipt.status===1n){
+                console.log(`[第${count}次MINT]  交易hash:${receipt.blockHash}`);
+            }else{
+                console.log("交易失败");
+            }
+            
             // await new Promise(resolve => setTimeout(resolve, 1000));
         }
     }catch(err){
