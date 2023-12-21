@@ -92,7 +92,6 @@ async function INJMint(accountDetails)  {
         }
     }catch(err){
         console.error("Error in INJMint:", err.message);
-        throw err;
     }
 }
 
@@ -112,7 +111,6 @@ async function main(){
                 console.log("mint次数：",currentSequence);
             }catch(err){
                 console.log(err.message);
-                throw err
             }
         }
 
