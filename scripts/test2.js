@@ -10,7 +10,7 @@ const envPath = path.join(__dirname, '../.env');
 dotenv.config({ path: envPath });
 
 
-const web3 = new Web3('https://avalanche.public-rpc.com');
+const web3 = new Web3('https://mainnet.chainx.org/rpc');
 
 
 const key = `0x${process.env.ZHU_KEY}`
@@ -20,8 +20,8 @@ const wallet =web3.eth.accounts.privateKeyToAccount(key)
 async function getRowList(){
 
     
-    const gasLimit = 23000;  
-    const gasPrice = web3.utils.toWei('880', 'gwei');
+    const gasLimit = 22000;  
+    const gasPrice = web3.utils.toWei('2', 'gwei');
     const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
     console.log(nonce);
 

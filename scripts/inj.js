@@ -36,7 +36,7 @@ async function INJMint(accountDetails)  {
  try{
         /** Prepare the Message */
         const amount = {
-            amount: new BigNumberInBase(0.001).toWei().toFixed(),
+            amount: new BigNumberInBase(0.0000000001).toWei().toFixed(),
             denom: 'inj',
         }
 
