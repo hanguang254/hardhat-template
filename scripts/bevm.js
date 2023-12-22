@@ -13,27 +13,33 @@ dotenv.config({ path: envPath });
 const web3 = new Web3('https://rpc-1.bevm.io/');
 
 
+//key私钥
 const key = `0x${process.env.ZHU_KEY}`
+
 const wallet =web3.eth.accounts.privateKeyToAccount(key)
 
 
 async function bevmMint(){
-    const gasLimit = 22000;  
-    const gasPrice = web3.utils.toWei('1.5', 'gwei');
-    const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
-    // console.log(nonce);
-    const transaction = {
-    from: wallet.address,
-    to: wallet.address,
-    value: web3.utils.toWei(0, 'ether'),
-    gas: gasLimit,
-    gasPrice: gasPrice,
-    nonce: Number(nonce.toString()),
-    data:"" //16进制数据
-    };
-    // console.log(transaction);
-    const {rawTransaction}=await wallet.signTransaction(transaction);
-    return rawTransaction;
+    try{
+        const gasLimit = 21000;  
+        const gasPrice = web3.utils.toWei('1.5', 'gwei');
+        const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
+        // console.log(nonce);
+        const transaction = {
+        from: wallet.address,
+        to: wallet.address,
+        value: web3.utils.toWei(0, 'ether'),
+        gas: gasLimit,
+        gasPrice: gasPrice,
+        nonce: Number(nonce.toString()),
+        data:"" //16进制数据
+        };
+        // console.log(transaction);
+        const {rawTransaction}=await wallet.signTransaction(transaction);
+        return rawTransaction;
+    }catch(err){
+        console.log(err);
+    }
 }
 async function run(){
     try{
@@ -45,8 +51,8 @@ async function run(){
             const rawTransaction =await bevmMint();
             const receipt = await web3.eth.sendSignedTransaction(rawTransaction);
             // console.log(receipt);
-            count++
             if(receipt.status===1n){
+                count++
                 console.log(`[第${count}次MINT]  交易hash:${receipt.blockHash}`);
             }else{
                 console.log("交易失败");

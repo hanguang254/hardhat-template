@@ -10,7 +10,7 @@ const envPath = path.join(__dirname, '../.env');
 dotenv.config({ path: envPath });
 
 
-const web3 = new Web3('https://rpc-1.bevm.io/');
+const web3 = new Web3('https://avalanche.blockpi.network/v1/rpc/280d85107e87cb59fe876b07d99b56d090cefe33');
 
 
 const key = `0x${process.env.ZHU_KEY}`
@@ -21,12 +21,12 @@ async function getRowList(){
 
     
     const gasLimit = 22000;  
-    const gasPrice = web3.utils.toWei('1.5', 'gwei');
+    const gasPrice = web3.utils.toWei('350', 'gwei');
     const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
     console.log(nonce);
 
     const list =[]
-    for(let i=0;i<=10;i++){
+    for(let i=0;i<=5;i++){
         const transaction = {
         from: wallet.address,
         to: wallet.address,
