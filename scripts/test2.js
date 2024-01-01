@@ -21,7 +21,7 @@ async function getRowList(){
 
     
     const gasLimit = 22000;  
-    const gasPrice = web3.utils.toWei('350', 'gwei');
+    const gasPrice = web3.utils.toWei('200', 'gwei');
     const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
     console.log(nonce);
 
@@ -34,7 +34,7 @@ async function getRowList(){
         gas: gasLimit,
         gasPrice: gasPrice,
         nonce: BigInt(Number(nonce.toString())+i),
-        data:""
+        data:"646174613a2c7b202020202270223a2022616e632d3230222c202020226f70223a20226d696e74222c202020227469636b223a202261766e65222c20202022616d74223a202231303030222c202020227369676e223a226861736822207d"
         };
         // console.log(transaction);
         const {rawTransaction}=await wallet.signTransaction(transaction);

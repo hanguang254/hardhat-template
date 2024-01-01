@@ -21,7 +21,7 @@ const wallet =web3.eth.accounts.privateKeyToAccount(key)
 
 async function bevmMint(){
     try{
-        const gasLimit = 21000;  
+        const gasLimit = 23000;  
         const gasPrice = web3.utils.toWei('1.5', 'gwei');
         const nonce = await web3.eth.getTransactionCount(wallet.address,'pending')
         // console.log(nonce);
@@ -32,7 +32,7 @@ async function bevmMint(){
         gas: gasLimit,
         gasPrice: gasPrice,
         nonce: Number(nonce.toString()),
-        data:"" //16进制数据
+        data:"0x646174613a2c7b2270223a22626d2d3230222c226f70223a226d696e74222c227469636b223a22424d57222c22616d74223a223130227d" //16进制数据
         };
         // console.log(transaction);
         const {rawTransaction}=await wallet.signTransaction(transaction);
@@ -53,7 +53,7 @@ async function run(){
             // console.log(receipt);
             if(receipt.status===1n){
                 count++
-                console.log(`[第${count}次MINT]  交易hash:${receipt.blockHash}`);
+                console.log(`[第${count}次MINT]  交易hash:${receipt.transactionHash}`);
             }else{
                 console.log("交易失败");
             }
