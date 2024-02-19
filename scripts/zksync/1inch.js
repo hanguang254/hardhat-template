@@ -82,7 +82,7 @@ async function test(){
     // const a = await swapTokensforTokens(USDC,ETH,ethers.utils.parseUnits("100", 6),wallet)
     console.log(a)
 }
-test()
+// test()
 
 
 
@@ -221,4 +221,4 @@ async function main(){
         
 }
     
-// main()
+main()
