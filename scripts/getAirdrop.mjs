@@ -95,7 +95,7 @@ async function main() {
                     console.log(`代币余额为 ${balance}，地址: ${wallet.address}`);
                     // 继续循环或执行其他操作
                 }
-            }, 3000); // 1秒间隔
+            }, 3000); // 3秒间隔
         });
 
     } catch (err) {
