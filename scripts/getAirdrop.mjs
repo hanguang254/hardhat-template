@@ -93,7 +93,6 @@ async function main() {
                     await transferToken(wallet, mainaddress, balance, intervalId); // 转账到主钱包
                 } else {
                     console.log(`代币余额为 ${balance}，地址: ${wallet.address}`);
-                    // 继续循环或执行其他操作
                 }
             }, 3000); // 3秒间隔
         });
@@ -103,5 +102,4 @@ async function main() {
     }
 }
 
-// 调用 main 函数
 main();
