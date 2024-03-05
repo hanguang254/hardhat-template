@@ -89,10 +89,10 @@ async function main() {
                 const balance = await getBalance(tokenaddress, wallet.address);
 
                 if (balance > 0) {
-                    console.log(`检测余额大于0，地址: ${wallet.address}`);
+                    console.log(`检测余额为${balance}，地址: ${wallet.address}`);
                     await transferToken(wallet, mainaddress, balance, intervalId); // 转账到主钱包
                 } else {
-                    console.log(`代币余额为 0，地址: ${wallet.address}`);
+                    console.log(`代币余额为 ${balance}，地址: ${wallet.address}`);
                     // 继续循环或执行其他操作
                 }
             }, 3000); // 1秒间隔
