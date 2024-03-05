@@ -28,7 +28,7 @@ const WETH = "0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91";
 //批量读取私钥
 function readKeys() {
     return new Promise((resolve, reject) => {
-      fs.readFile('./scripts/zksync/private-key.txt', 'utf8', (error, data) => {
+      fs.readFile('./private-key.txt', 'utf8', (error, data) => {
         if (error) {
           reject(error);
         } else {
@@ -77,7 +77,7 @@ async function swapExactETHForUSDC(Contract,Wallet){
     try{
         // ethers.utils.parseUnits("0.0005",18) 兑换的金额
         const tokenamount = await getAmountsExpanded(
-            ethers.utils.parseUnits("0.001",18),WETH,USDC,Wallet
+            ethers.utils.parseUnits("0.0005",18),WETH,USDC,Wallet
         );
         //防止溢出
         const amountOutMin =BigNumber.from(tokenamount).sub(BigNumber.from(Math.floor(tokenamount * 0.05)));
