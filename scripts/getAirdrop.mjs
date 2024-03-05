@@ -3,9 +3,25 @@ dotenv.config();
 import { Provider ,Wallet} from "zksync-ethers";
 import { ethers } from "ethers";
 import axios from 'axios';
+import fs from 'fs'
 
-const tokenaddress = '0x9AD4c4d0800831ED69Ab1289df25280EF22801ba' //代币地址
+const tokenaddress = '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4' //代币地址
 const mainaddress = '0x88a68278fe332846bacc78bb6c38310a357bee06' //归集地址
+
+
+//批量读取私钥
+function readKeys() {
+    return new Promise((resolve, reject) => {
+      fs.readFile('./scripts/zks_key.txt', 'utf8', (error, data) => {
+        if (error) {
+          reject(error);
+        } else {
+          const array = data.split('\n').map((line) => line.trim()); // 去除每行数据的空格和换行符
+          resolve(array);
+        }
+      });
+    });
+}
 
 const walletKeys = [
     //私钥集合
@@ -61,7 +77,8 @@ async function transferToken(wallet, to_address, balance, intervalId) {
 
 async function main() {
     try {
-        const wallets = walletKeys.map(key => {
+        const Keys = await readKeys()
+        const wallets = Keys.map(key => {
             const wallet = getWallet(key);
             let intervalId; // 为每个钱包维护一个独立的 intervalId
             return { wallet, intervalId };
