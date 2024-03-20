@@ -34,7 +34,7 @@ function getWallet(key){
     try{
         const provider = new Provider("https://zksync2-mainnet.zksync.io");
         const wallet = new Wallet(key, provider);
-        console.log(wallet.address);
+        // console.log(wallet.address);
         return wallet
     }catch(err){
         console.log(err.message);
@@ -94,7 +94,7 @@ async function main() {
                 } else {
                     console.log(`代币余额为 ${balance}，地址: ${wallet.address}`);
                 }
-            }, 3000); // 3秒间隔
+            }, 2000); // 3秒间隔
         });
 
     } catch (err) {
