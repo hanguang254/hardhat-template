@@ -12,7 +12,7 @@ const mainaddress = '0x88a68278fe332846bacc78bb6c38310a357bee06' //归集地址
 //批量读取私钥
 function readKeys() {
     return new Promise((resolve, reject) => {
-      fs.readFile('./scripts/zks_key.txt', 'utf8', (error, data) => {
+      fs.readFile('./zks_key.txt', 'utf8', (error, data) => {
         if (error) {
           reject(error);
         } else {
@@ -77,14 +77,14 @@ async function transferToken(wallet, to_address, balance, intervalId) {
 
 async function main() {
     try {
-        const Keys = await readKeys()
+        const Keys = await readKeys();
         const wallets = Keys.map(key => {
             const wallet = getWallet(key);
             let intervalId; // 为每个钱包维护一个独立的 intervalId
             return { wallet, intervalId };
         });
 
-        wallets.forEach(async ({ wallet, intervalId }) => {
+        await Promise.all(wallets.map(async ({ wallet, intervalId }) => {
             intervalId = setInterval(async () => {
                 const balance = await getBalance(tokenaddress, wallet.address);
 
@@ -94,8 +94,8 @@ async function main() {
                 } else {
                     console.log(`代币余额为 ${balance}，地址: ${wallet.address}`);
                 }
-            }, 2000); // 3秒间隔
-        });
+            }, 1000); // 间隔
+        }));
 
     } catch (err) {
         console.error(err.message);
