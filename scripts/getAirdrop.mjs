@@ -12,7 +12,7 @@ const mainaddress = '0x88a68278fe332846bacc78bb6c38310a357bee06' //归集地址
 //批量读取私钥
 function readKeys() {
     return new Promise((resolve, reject) => {
-      fs.readFile('./zks_key.txt', 'utf8', (error, data) => {
+      fs.readFile('./scripts/zks_key.txt', 'utf8', (error, data) => {
         if (error) {
           reject(error);
         } else {
