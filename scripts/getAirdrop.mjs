@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import axios from 'axios';
 import fs from 'fs'
 
+
 const tokenaddress = '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4' //代币地址
 const mainaddress = '0x88a68278fe332846bacc78bb6c38310a357bee06' //归集地址
 
@@ -59,6 +60,18 @@ async function getBalance(contractaddress,address) {
     }
 }
 
+async function getBalance_two(address,tokenaddress){
+    try{
+        const provider = new Provider("https://zksync2-mainnet.zksync.io");
+        const balance =await provider.getBalance(address,"latest",tokenaddress)
+        // console.log(`地址:${address}查询余额:${Number(balance)}`);
+        return Number(balance)
+    }catch(err){
+        console.log(err);
+    }
+}
+
+// getBalance_two(mainaddress,tokenaddress)
 
 
 async function transferToken(wallet, to_address, balance, intervalId) {
@@ -86,7 +99,7 @@ async function main() {
 
         await Promise.all(wallets.map(async ({ wallet, intervalId }) => {
             intervalId = setInterval(async () => {
-                const balance = await getBalance(tokenaddress, wallet.address);
+                const balance = await getBalance_two(wallet.address,tokenaddress);
 
                 if (balance > 0) {
                     console.log(`检测余额为${balance}，地址: ${wallet.address}`);
@@ -94,7 +107,7 @@ async function main() {
                 } else {
                     console.log(`代币余额为 ${balance}，地址: ${wallet.address}`);
                 }
-            }, 1000); // 间隔
+            }, 450); // 间隔
         }));
 
     } catch (err) {
